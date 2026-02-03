@@ -12,6 +12,7 @@ public class GroundDetector : MonoBehaviour
     void Update()
     {
         touched = Physics.Raycast(transform.position, Vector3.down, distance);
+        Debug.Log("touched: " + touched);
     }
 
     private void OnDrawGizmos()

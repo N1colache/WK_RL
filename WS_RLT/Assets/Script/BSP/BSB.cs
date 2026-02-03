@@ -45,11 +45,6 @@ public class Bsp : MonoBehaviour
     private Room _startRoom;
     private Room _bossRoom;
     private Room _specialRoom;
-    
-    [Header("Special Rooms Size")]
-    [SerializeField] private Vector2 _startRoomSize = new Vector2(20, 20);
-    [SerializeField] private Vector2 _bossRoomSize = new Vector2(20, 20);
-
 
     private void Start()
     {
@@ -74,40 +69,15 @@ public class Bsp : MonoBehaviour
         }
     
         //Create first Room
-        _rooms = new List<Room>();
-        _cuttableRooms = new List<Room>();
-        
-        _startRoom = new Room
-        {
-            Size = _startRoomSize,
-            Center = new Vector2(
-                -_sizeX / 2f + _startRoomSize.x / 2f,
-                _sizeY / 2f - _startRoomSize.y / 2f
-            )
-        };
-
-        _rooms.Add(_startRoom);
-        
-        _bossRoom = new Room
-        {
-            Size = _bossRoomSize,
-            Center = new Vector2(
-                _sizeX / 2f - _bossRoomSize.x / 2f,
-                -_sizeY / 2f + _bossRoomSize.y / 2f
-            )
-        };
-
-        _rooms.Add(_bossRoom);
-
-
         Room rootRoom = new Room
         {
+            //Initialisation
             Size = new Vector2(_sizeX, _sizeY),
-            Center = Vector2.zero
+            Center = new Vector2(0, 0)
         };
 
-        _cuttableRooms.Add(rootRoom);
-
+        _rooms = new List<Room> { rootRoom };
+        _cuttableRooms = new List<Room> { rootRoom };
 
         _rooms = new List<Room> { rootRoom };
 
@@ -370,15 +340,6 @@ public class Bsp : MonoBehaviour
             );
             
             //Gizmos.DrawSphere(new Vector3(_bossRoom.Center.x, 0, _bossRoom.Center.y), 4.0f);
-        }
-        else
-        {
-            _specialRoom = _roomMatrix[2,4];
-            Gizmos.color = Color.white;Gizmos.DrawCube(
-                new Vector3(_specialRoom.Center.x, 0, _specialRoom.Center.y),
-                new Vector3(_specialRoom.Size.x, 0, _specialRoom.Size.y)
-              
-            );
         }
     }
 }
