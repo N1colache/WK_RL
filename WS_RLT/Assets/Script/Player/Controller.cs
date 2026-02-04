@@ -10,15 +10,23 @@ public class Controller : MonoBehaviour
 
     [Header("Déplacement")]
     [SerializeField] private float moveSpeed;
-    [SerializeField] public float dashSpeed;
-    [SerializeField] private float dashDecaySpeed;
-    [SerializeField] private bool _dashing;
 
     [Header("Saut")]
     [SerializeField] private float _jumpHeight = 2f;
     [SerializeField] private float _gravity = -9.81f;
     private float _jumpTimeDelta;
     [SerializeField] private float jumpTimeTotal = 0.1f;
+    
+    [Header("Dash")]
+    [SerializeField] private float dashSpeed = 10f;
+    [SerializeField] private float dashTime = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+
+    private bool isDashing = false;
+    private float dashTimer;
+    private float cooldownTimer;
+    private Vector3 dashDirection;
+
 
 
     private Vector3 velocity;
@@ -36,7 +44,16 @@ public class Controller : MonoBehaviour
     
     void Update()
     {
-        
+        if (_inputs._dashing && !isDashing && cooldownTimer <= 0)
+        {
+            if (!isDashing && _groundDetector)
+            {
+                 StartDash();
+            }
+           
+        }
+       
+
         if (_groundDetector.touched)
         {
             _jumpTimeDelta -= Time.deltaTime;
@@ -46,6 +63,25 @@ public class Controller : MonoBehaviour
         {
             _jumpTimeDelta = jumpTimeTotal;
         }
+        if (isDashing)
+        {
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+
+            dashTimer -= Time.deltaTime;
+
+            if (dashTimer <= 0)
+            {
+                isDashing = false;
+            }
+
+            return; // on ignore le reste du mouvement pendant le dash
+        }
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+
+
         // Movement
         Vector2 input = _inputs.Move;
 
@@ -70,7 +106,23 @@ public class Controller : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
         
         
+        
     }
+    void StartDash()
+    {
+        isDashing = true;
+        dashTimer = dashTime;
+        cooldownTimer = dashCooldown;
+
+        Vector2 input = _inputs.Move;
+
+        // Si le joueur ne bouge pas, dash vers l’avant
+        if (input.magnitude > 0.1f)
+            dashDirection = new Vector3(input.x, 0, input.y).normalized;
+        else
+            dashDirection = transform.forward;
+    }
+
    
   
 }

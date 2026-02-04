@@ -36,14 +36,11 @@ public class Inputs : MonoBehaviour
         Debug.Log(Jump);
     }
 
-    public void OnDash(InputAction.CallbackContext context)
+    public void OnDash(InputValue value)
     {
+        _dashing = value.isPressed;
         Debug.Log("Dash");
-        if (context.started && !_dashing)
-        {
-            _dashing = true;
-            _controller._rb.linearVelocity= transform.forward.normalized * _controller.dashSpeed;
-        }
+       
     }
     
    
