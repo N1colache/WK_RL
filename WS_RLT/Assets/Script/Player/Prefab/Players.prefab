@@ -62,6 +62,7 @@ GameObject:
   - component: {fileID: 8776817673492756057}
   - component: {fileID: 6834967358777080920}
   - component: {fileID: -5413887436703689678}
+  - component: {fileID: -1079797509402239056}
   m_Layer: 0
   m_Name: Players
   m_TagString: Untagged
@@ -163,7 +164,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 2
   m_CollisionDetection: 0
 --- !u!136 &1282735366780390964
 CapsuleCollider:
@@ -212,16 +213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aefe4f481733684695b955357afef3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundSpeed: 10
-  airSpeed: 8
-  sneakSpeed: 3
-  turnSpeed: 10
-  jumpForce: 0.15
-  jumpHeight: 1
-  jumpTimeTotal: 0.1
-  fastFallingFactor: 2
-  groundDetector: {fileID: 3474233512464599658}
-  _landingDone: 1
+  moveSpeeed: 0
+  horizontal: 0
+  _jumpHeight: 2
+  _gravity: -9.81
+  controller: {fileID: 0}
 --- !u!114 &-5413887436703689678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +245,31 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: 75ffd7a6-15de-47f3-bf1c-7a61e046e7b6
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!143 &-1079797509402239056
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6416899849720752392}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
