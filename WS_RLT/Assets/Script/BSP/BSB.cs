@@ -6,45 +6,51 @@ using UnityEngine;
 
 public class Bsp : MonoBehaviour
 {
+    public enum RoomType
+    {
+        Start,
+        Normal,
+        Boss,
+        Special
+    }
+
     public class Room
     {
         public Vector2 Size;
         public Vector2 Center;
-        public GameObject InstantiatedChunk;
-    }
-    
-    [Header("Container")]
-    [SerializeField] private GameObject _generationContainer;
 
-    [Header(" Size")]
+        public RoomType Type;
+
+        public GameObject ChunkPrefab;
+        public GameObject InstantiatedChunk;
+
+        public bool IsInstantiated;
+    }
+    [SerializeField] private GameObject _generationContainer;
+    [SerializeField] private Transform _player;
+
     [SerializeField][Range(0, 500)] private float _sizeX;
     [SerializeField][Range(0, 500)] private float _sizeY;
 
-    [Header("Minimum Room Size")]
     [SerializeField][Range(1, 50)] private float _minSizeX;
     [SerializeField][Range(1, 50)] private float _minSizeY;
 
-    [Header("Chunks")]
+    [Header("Chunks Normaux")]
     [SerializeField] private List<GameObject> _chunkPrefab5X5;
     [SerializeField] private List<GameObject> _chunkPrefab10X5;
     [SerializeField] private List<GameObject> _chunkPrefab10X10;
     [SerializeField] private List<GameObject> _chunkPrefab20X20;
 
-    [Header("Player")]
-    [SerializeField] private Transform _player;
+    [Header("Chunks Spéciaux")]
+    [SerializeField] private GameObject _startRoomPrefab;
+    [SerializeField] private GameObject _bossRoomPrefab;
+    [SerializeField] private GameObject _specialRoomPrefab;
 
     private List<Room> _rooms;
     private List<Room> _cuttableRooms;
 
-    //pour la matrice
-    private Room[,] _roomMatrix;
-    private int _gridWidth;
-    private int _gridHeight;
-
-    // Salles spéciales
-    private Room _startRoom;
-    private Room _bossRoom;
-    private Room _specialRoom;
+    private List<Room> _mainPath;
+    private int _currentRoomIndex = 0;
 
     private void Start()
     {
@@ -57,21 +63,26 @@ public class Bsp : MonoBehaviour
         {
             GeneratePattern();
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            
+        }
+
+        UpdateVisibleRooms();
     }
 
-// List<Room>
     private void GeneratePattern()
     {
-        // Clear previously created rooms
+       
+
         foreach (Transform child in _generationContainer.transform)
         {
             Destroy(child.gameObject);
         }
-    
-        //Create first Room
+
         Room rootRoom = new Room
         {
-            //Initialisation
             Size = new Vector2(_sizeX, _sizeY),
             Center = new Vector2(0, 0)
         };
@@ -79,267 +90,235 @@ public class Bsp : MonoBehaviour
         _rooms = new List<Room> { rootRoom };
         _cuttableRooms = new List<Room> { rootRoom };
 
-        _rooms = new List<Room> { rootRoom };
-
-        _cuttableRooms = new List<Room> { rootRoom };
-
-        // Binary Space Partitioning (BSP)
         while (_cuttableRooms.Count > 0)
         {
-            //While can cut a room in 2, do it
-            //If cut in 2, create new rooms
             Room roomToCut = _cuttableRooms[0];
             _cuttableRooms.RemoveAt(0);
 
             bool canCutVertically = roomToCut.Size.x / 2.0f >= _minSizeX;
             bool canCutHorizontally = roomToCut.Size.y / 2.0f >= _minSizeY;
-     
+
             if (!canCutVertically && !canCutHorizontally)
             {
                 _rooms.Add(roomToCut);
                 continue;
             }
 
-            bool doCutVertical;
-            if (canCutHorizontally && canCutVertically)
-            {
-                doCutVertical = Random.Range(0, 2) == 0;
-            }
-            else
-            {
-                doCutVertical = canCutVertically;
-            }
+            bool doCutVertical = canCutVertically && (!canCutHorizontally || Random.Range(0, 2) == 0);
 
             _rooms.Remove(roomToCut);
 
-            // If code reach this point => Cut the room
             if (doCutVertical)
             {
-                // Cut Vertical
-                Room roomLeft = new Room();
-                Room roomRight = new Room();
-
-                // Size
                 float newWidth = Random.Range(_minSizeX, roomToCut.Size.x - _minSizeX);
 
-                roomLeft.Size = new Vector2(newWidth, roomToCut.Size.y);
-                roomRight.Size = new Vector2(roomToCut.Size.x - newWidth, roomToCut.Size.y);
+                Room left = new Room();
+                Room right = new Room();
 
-                // center
-                float offset = (roomToCut.Size.x / 2.0f) - (roomLeft.Size.x / 2.0f);
-                roomLeft.Center = new Vector2(roomToCut.Center.x - offset, roomToCut.Center.y);
+                left.Size = new Vector2(newWidth, roomToCut.Size.y);
+                right.Size = new Vector2(roomToCut.Size.x - newWidth, roomToCut.Size.y);
 
-                offset = (roomToCut.Size.x / 2.0f) - (roomRight.Size.x / 2.0f);
-                roomRight.Center = new Vector2(roomToCut.Center.x + offset, roomToCut.Center.y);
+                float offset = (roomToCut.Size.x / 2f) - (left.Size.x / 2f);
+                left.Center = new Vector2(roomToCut.Center.x - offset, roomToCut.Center.y);
 
-                // Add room to cuttable rooms
-                _cuttableRooms.Add(roomLeft);
-                _cuttableRooms.Add(roomRight);
+                offset = (roomToCut.Size.x / 2f) - (right.Size.x / 2f);
+                right.Center = new Vector2(roomToCut.Center.x + offset, roomToCut.Center.y);
+
+                _cuttableRooms.Add(left);
+                _cuttableRooms.Add(right);
             }
             else
             {
-                // Cut Horizontal
-                Room roomTop = new Room();
-                Room roomBottom = new Room();
-
                 float newHeight = Random.Range(_minSizeY, roomToCut.Size.y - _minSizeY);
 
-                roomTop.Size = new Vector2(roomToCut.Size.x, newHeight);
-                roomBottom.Size = new Vector2(roomToCut.Size.x, roomToCut.Size.y - newHeight);
+                Room top = new Room();
+                Room bottom = new Room();
 
-                float offset = (roomToCut.Size.y / 2.0f) - (roomTop.Size.y / 2.0f);
-                roomTop.Center = new Vector2(roomToCut.Center.x, roomToCut.Center.y - offset);
+                top.Size = new Vector2(roomToCut.Size.x, newHeight);
+                bottom.Size = new Vector2(roomToCut.Size.x, roomToCut.Size.y - newHeight);
 
-                offset = (roomToCut.Size.y / 2.0f) - (roomBottom.Size.y / 2.0f);
-                roomBottom.Center = new Vector2(roomToCut.Center.x, roomToCut.Center.y + offset);
+                float offset = (roomToCut.Size.y / 2f) - (top.Size.y / 2f);
+                top.Center = new Vector2(roomToCut.Center.x, roomToCut.Center.y - offset);
 
-                // Add room to cuttable rooms
-                _cuttableRooms.Add(roomTop);
-                _cuttableRooms.Add(roomBottom);
+                offset = (roomToCut.Size.y / 2f) - (bottom.Size.y / 2f);
+                bottom.Center = new Vector2(roomToCut.Center.x, roomToCut.Center.y + offset);
+
+                _cuttableRooms.Add(top);
+                _cuttableRooms.Add(bottom);
             }
         }
 
-        // Spawn chunks
-        foreach (Room room in _rooms)
-        {
-            var possibleChunkToInstantiate = new List<GameObject>();
+        
 
-            if (room.Size is { x: >= 20, y: >= 20 })
-            {
-                possibleChunkToInstantiate.AddRange(_chunkPrefab20X20);
-            }
-
-            if (room.Size.x >= 10)
-            {
-                if (room.Size.y >= 10)
-                {
-                    possibleChunkToInstantiate.AddRange(_chunkPrefab10X10);
-                } else if (room.Size.y >= 5)
-                {
-                    possibleChunkToInstantiate.AddRange(_chunkPrefab10X5);
-                }
-            }
-
-            if (room.Size is { x: >= 5, y: >= 5 })
-            {
-                possibleChunkToInstantiate.AddRange(_chunkPrefab5X5);
-            }
-     
-            GameObject chunkPrefab = possibleChunkToInstantiate[Random.Range(0, possibleChunkToInstantiate.Count)];
-     
-            room.InstantiatedChunk = Instantiate(chunkPrefab, new Vector3(room.Center.x, 0, room.Center.y), Quaternion.identity, _generationContainer.transform);
-        }
-        // Connect teleporters
-            foreach (Room room in _rooms)
-            {
-                    // 2. Chercher les 3 plus proches
-                 List<Room> neighborRooms = new List<Room>();
-                 foreach (Room otherRoom in _rooms)
-                 {
-                        // Ignore self
-                         if (otherRoom == room) continue;
-
-                        // Distance to otherRoom
-                         float distance = Vector2.Distance(room.Center, otherRoom.Center);
-
-                         if (neighborRooms.Count < 3)
-                        {
-                            neighborRooms.Add(otherRoom);  
-                        } 
-                         else
-                         {
-                             for (int i = 0; i < 3; i++)
-                             {
-                                 Room neighborRoom = neighborRooms[i];
-                                 // Check if closer than existing neighbor room
-                                 if (distance < Vector2.Distance(room.Center, neighborRoom.Center))
-                                 {
-                                     neighborRooms.Remove(neighborRoom);
-                                     neighborRooms.Add(otherRoom);
-                                     break;
-                                 }
-                             }
-                        } 
-                 }
-    
-                // Connect teleporters
-                List<Teleporter> myTeleporters = new List<Teleporter>();
-                myTeleporters = room.InstantiatedChunk.GetComponentsInChildren<Teleporter>().ToList();
-
-                foreach (Room neighborRoom in neighborRooms)
-                {
-                    List<Teleporter> neighborTeleporters = new List<Teleporter>();
-                    neighborTeleporters = neighborRoom.InstantiatedChunk.GetComponentsInChildren<Teleporter>().ToList();
-
-                    bool connected = false;
-                    foreach (Teleporter neighborTeleporter in neighborTeleporters)
-                    {
-                        if (neighborTeleporter.GetDestinationTeleporter() == null)
-                        {
-                            foreach (Teleporter myTeleporter in myTeleporters)
-                            {
-                                if (myTeleporter.GetDestinationTeleporter() == null)
-                                {
-                                    myTeleporter.SetDestinationTeleporter(neighborTeleporter);
-                                    neighborTeleporter.SetDestinationTeleporter(myTeleporter);
-                                    connected = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (connected)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-        BuildRoomMatrix();
-        // Spawn joueur dans la start room
-        if (_player != null && _startRoom != null)
-        {
-            _player.position = new Vector3(_startRoom.Center.x, 0, _startRoom.Center.y);
-        }
+        
     }
-    
 
-    private void BuildRoomMatrix()
+    private void AssignRoomTypes()
     {
-        float minX = _rooms.Min(r => r.Center.x);
-        float maxX = _rooms.Max(r => r.Center.x);
+        Room startRoom = _rooms
+            .OrderByDescending(r => r.Center.x)
+            .ThenBy(r => r.Center.y)
+            .First();
 
-        float minY = _rooms.Min(r => r.Center.y);
-        float maxY = _rooms.Max(r => r.Center.y);
+        Room bossRoom = _rooms
+            .OrderBy(r => r.Center.x)
+            .ThenByDescending(r => r.Center.y)
+            .First();
 
-        _gridWidth = Mathf.RoundToInt((maxX - minX) / _minSizeX) + 1;
-        _gridHeight = Mathf.RoundToInt((maxY - minY) / _minSizeY) + 1;
+        startRoom.Type = RoomType.Start;
+        bossRoom.Type = RoomType.Boss;
 
-        _roomMatrix = new Room[_gridWidth, _gridHeight];
+        Debug.Log($"Start Room : {startRoom.Center}");
+        Debug.Log($"Boss Room : {bossRoom.Center}");
 
-        foreach (Room room in _rooms)
+        foreach (Room r in _rooms)
         {
-            int x = Mathf.RoundToInt((room.Center.x - minX) / _minSizeX);
-            int y = Mathf.RoundToInt((room.Center.y - minY) / _minSizeY);
-
-            x = Mathf.Clamp(x, 0, _gridWidth - 1);
-            y = Mathf.Clamp(y, 0, _gridHeight - 1);
-
-            _roomMatrix[x, y] = room;
+            if (r != startRoom && r != bossRoom)
+            {
+                r.Type = RoomType.Normal;
+            }
         }
 
-        // Définition des salles spéciales
-        _startRoom = _roomMatrix[0, _gridHeight - 1];
-        _bossRoom = _roomMatrix[_gridWidth - 1, 0];
-        List<float> _specialRooms = new List<float>();
-        _specialRoom = _roomMatrix[_gridWidth - 5, _gridHeight - 5];
+        var sideRooms = _rooms
+            .Where(r => r.Type == RoomType.Normal)
+            .OrderByDescending(r => Mathf.Abs(r.Center.x))
+            .Take(2);
+
+        foreach (var special in sideRooms)
+        {
+            special.Type = RoomType.Special;
+            Debug.Log($"Salle spéciale placée : {special.Center}");
+        }
     }
+
+    private List<Room> FindPathFromStartToBoss()
+    {
+        Room start = _rooms.First(r => r.Type == RoomType.Start);
+        Room boss = _rooms.First(r => r.Type == RoomType.Boss);
+
+        List<Room> path = new List<Room>();
+        Room current = start;
+
+        path.Add(current);
+
+        while (current != boss)
+        {
+            Room next = _rooms
+                .Where(r => !path.Contains(r))
+                .OrderBy(r => Vector2.Distance(r.Center, boss.Center))
+                .First();
+
+            path.Add(next);
+            current = next;
+        }
+        
+        foreach (var room in path)
+        {
+            Debug.Log($" -> {room.Type} ({room.Center})");
+        }
+
+        return path;
+    }
+
+    private GameObject PickChunkForRoom(Room room)
+    {
+        if (room.Type == RoomType.Start)
+            return _startRoomPrefab;
+
+        if (room.Type == RoomType.Boss)
+            return _bossRoomPrefab;
+
+        if (room.Type == RoomType.Special)
+            return _specialRoomPrefab;
+
+        var list = new List<GameObject>();
+
+        if (room.Size.x >= 20 && room.Size.y >= 20)
+            list.AddRange(_chunkPrefab20X20);
+
+        if (room.Size.x >= 10)
+        {
+            if (room.Size.y >= 10)
+                list.AddRange(_chunkPrefab10X10);
+            else if (room.Size.y >= 5)
+                list.AddRange(_chunkPrefab10X5);
+        }
+
+        if (room.Size.x >= 5 && room.Size.y >= 5)
+            list.AddRange(_chunkPrefab5X5);
+
+        return list[Random.Range(0, list.Count)];
+    }
+
+    private void SpawnRoom(Room room)
+    {
+        if (room.IsInstantiated) return;
+
+        room.ChunkPrefab = PickChunkForRoom(room);
+
+        room.InstantiatedChunk = Instantiate(
+            room.ChunkPrefab,
+            new Vector3(room.Center.x, 0, room.Center.y),
+            Quaternion.identity,
+            _generationContainer.transform
+        );
+
+        room.IsInstantiated = true;
+
+    
+    }
+
+    private void DespawnRoom(Room room)
+    {
+        if (!room.IsInstantiated) return;
+
+        Destroy(room.InstantiatedChunk);
+        room.IsInstantiated = false;
+        
+    }
+
+    private void UpdateVisibleRooms()
+    {
+        for (int i = 0; i < _mainPath.Count; i++)
+        {
+            Room room = _mainPath[i];
+
+            if (i == _currentRoomIndex || i == _currentRoomIndex + 1)
+            {
+                if (!room.IsInstantiated)
+                    SpawnRoom(room);
+            }
+            else
+            {
+                if (room.IsInstantiated)
+                    DespawnRoom(room);
+            }
+        }
+    }
+
+   
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;// voir toute les salles
         Gizmos.DrawWireCube(transform.position, new Vector3(_sizeX, 0, _sizeY));
 
         if (_rooms != null)
         {
             foreach (Room room in _rooms)
             {
-                Gizmos.color = Color.blue;
+                Color c = Color.white;
+
+                if (room.Type == RoomType.Start) c = Color.green;
+                if (room.Type == RoomType.Boss) c = Color.red;
+                if (room.Type == RoomType.Special) c = Color.yellow;
+
+                Gizmos.color = c;
+
                 Gizmos.DrawWireCube(
                     new Vector3(room.Center.x, 0, room.Center.y),
                     new Vector3(room.Size.x, 0, room.Size.y)
                 );
             }
-        }
-
-        if (_startRoom != null)
-        {
-            Gizmos.color = Color.green;// voir la première salle
-            Gizmos.DrawCube(
-                new Vector3(_startRoom.Center.x, 0, _startRoom.Center.y),
-                new Vector3(_startRoom.Size.x, 0, _startRoom.Size.y)
-                );
-        }
-
-        if (_bossRoom != null)
-        {
-            Gizmos.color = Color.red;// voir la boss room
-            Gizmos.DrawCube(
-              new Vector3(_bossRoom.Center.x, 0, _bossRoom.Center.y),
-              new Vector3(_bossRoom.Size.x, 0, _bossRoom.Size.y)
-              
-            );
-            //Gizmos.DrawSphere(new Vector3(_bossRoom.Center.x, 0, _bossRoom.Center.y), 4.0f);
-        }
-        if (_specialRoom != null)
-        {
-            Gizmos.color = Color.yellow;// voir la boss room
-            Gizmos.DrawCube(
-                new Vector3(_specialRoom.Center.x, 0, _specialRoom.Center.y),
-                new Vector3(_specialRoom.Size.x, 0, _specialRoom.Size.y)
-              
-            );
-            
-            //Gizmos.DrawSphere(new Vector3(_bossRoom.Center.x, 0, _bossRoom.Center.y), 4.0f);
         }
     }
 }

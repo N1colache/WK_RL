@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3136899890686162627}
   - component: {fileID: -4685689518754457019}
+  - component: {fileID: 4085929216804669308}
   m_Layer: 0
   m_Name: Chuck10x5
   m_TagString: Untagged
@@ -157,6 +158,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distance: 0.5
   touched: 0
+--- !u!114 &4085929216804669308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824204625621222847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd42819570488045a097fd1490b0bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2210417815347752775
 PrefabInstance:
   m_ObjectHideFlags: 0
