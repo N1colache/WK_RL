@@ -93,10 +93,6 @@ public class GridDungeon : MonoBehaviour
                 {
                     room.Type = RoomType.Boss;
                 }
-                else if (y == sidePos.y && x == sidePos.x)
-                {
-                    room.Type = RoomType.side;
-                }
                 else
                 {
                     room.Type = RoomType.Normal;
@@ -117,10 +113,20 @@ public class GridDungeon : MonoBehaviour
                 {
                     Rightroom.Add(room);
                 }
+                 
+                                     
+                if (room.GridPosition.y == 0 || room.GridPosition.y == width - 1)
+                {
+                    room.Type = RoomType.side;
+                }
+                                     
             }
-            sideRoom.Add(room);
+           
+
             
+
         }
+        
         Debug.Log("Left rooms count : " + Leftroom.Count);
         Debug.Log("Right rooms count : " + Rightroom.Count);
         Debug.Log("Side room number" + sideRoom.Count);
