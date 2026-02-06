@@ -2,28 +2,31 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    [SerializeField] private Teleporter _destinationTeleporter;
+   private Vector3 _destinaion;
+  
 
-    public Teleporter GetDestinationTeleporter()
-    {
-        return _destinationTeleporter;
-    }
-
-    public void SetDestinationTeleporter(Teleporter destinationTeleporter)
-    {
-        _destinationTeleporter = destinationTeleporter;
-    }
-    
-    private void OnDrawGizmos()
-    {
-        if (_destinationTeleporter != null)
-        {
-            Gizmos.DrawLine(transform.position, _destinationTeleporter.transform.position);
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(transform.position, 1.0f);
-        }
-    }
+   public void SetDestination(Vector3 _dest)
+   {
+      _destinaion = _dest;
+   }
+   private void OnTriggerEnter(Collider other)
+   {
+      if (other.CompareTag("Player"))
+      {
+         other.transform.position = _destinaion;
+         
+      }
+   }
+   private void OnDrawGizmos()
+   {
+      if (_destinaion != null)
+      {
+         Gizmos.DrawLine(transform.localPosition, _destinaion);
+      }
+      else
+      {
+         Gizmos.color = Color.red;
+         Gizmos.DrawSphere(transform.position, 1.0f);
+      }
+   }
 }
