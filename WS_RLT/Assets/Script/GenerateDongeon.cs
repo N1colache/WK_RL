@@ -21,7 +21,8 @@ public class GridDungeon : MonoBehaviour
         public GameObject InstantiatedChunk;
         public Transform SpawnPoint;
     }
-    [SerializeField] private GameObject _generationContainer;    
+    [SerializeField] private GameObject _generationContainer;   
+    
     [Header("Taille de la grille")]
     [SerializeField] private int width = 5;
     [SerializeField] private int height = 5;
@@ -38,6 +39,7 @@ public class GridDungeon : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private Transform player;
+    
 
     private Room[,] grid;
 
@@ -139,6 +141,7 @@ public class GridDungeon : MonoBehaviour
             {
                 Debug.Log("Left Room");
                 leftTPRoom.Add(room);
+              
             }
 
             if (room.GridPosition.x - 1 < width)
@@ -215,54 +218,67 @@ public class GridDungeon : MonoBehaviour
 
     void ConnectTeleporters()
     {
-        for (int x = 0; x < width; x++)
+        foreach (Room room in grid )
         {
-            for (int y = 0; y < height; y++)
+            if (room.InstantiatedChunk == null)
+                continue;
+            Teleporter tpRight = room.InstantiatedChunk.transform.Find("TeleporterRight")?.GetComponent<Teleporter>();
+            Teleporter tpLeft = room.InstantiatedChunk.transform.Find("TeleporterLeft")?.GetComponent<Teleporter>();
+            Teleporter tpUp = room.InstantiatedChunk.transform.Find("TeleporterUp")?.GetComponent<Teleporter>();
+            
+            Vector2Int pos = room.GridPosition;
+            
+            if (pos.x + 1 < width)
             {
-                Room room = grid[x, y];
-
-                if (room.InstantiatedChunk == null)
-                    continue;
-
-                // Récupérer les TP dans le prefab
-                Teleporter tpRight = room.InstantiatedChunk.transform.Find("TeleporterRight")?.GetComponent<Teleporter>();
-                Teleporter tpUp = room.InstantiatedChunk.transform.Find("TeleporterUp")?.GetComponent<Teleporter>();
-
-                // ---- TP VERS LA DROITE ----
-                if (x + 1 < width)
+                if (tpRight != null)
                 {
-                    if (tpRight != null)
-                    {
-                        Vector3 dest = grid[x + 1, y].WorldPosition;
-                        tpRight.SetDestination(dest);
-                        tpRight.gameObject.SetActive(true);
-
-                        Debug.Log($"TP droite connecté : {room.GridPosition} → {x + 1},{y}");
-                    }
+                    Room targetRoom = grid[pos.x + 1, pos.y];
+                    Vector3 dest = targetRoom.WorldPosition;
+                    
+                    tpRight.SetDestination(dest);
+                    tpRight.gameObject.SetActive(true);
                 }
-                else
-                {
-                    if (tpRight != null)
-                        tpRight.gameObject.SetActive(false);
-                }
-
-                // ---- TP VERS LE HAUT ----
-                if (y + 1 < height)
-                {
+            }
+            else
+            {
+                if (tpRight != null)
+                    tpRight.gameObject.SetActive(false);
+            }
+            if(pos.y + 1 < height)
+            {
+                
                     if (tpUp != null)
                     {
-                        Vector3 dest = grid[x, y + 1].WorldPosition;
+                        Room targetRoom = grid[pos.x, pos.y + 1];
+                        Vector3 dest = targetRoom.WorldPosition;
+                        
                         tpUp.SetDestination(dest);
                         tpUp.gameObject.SetActive(true);
-
-                        Debug.Log($"TP haut connecté : {room.GridPosition} → {x},{y + 1}");
                     }
-                }
-                else
+            }
+            else
+            {
+                if (tpUp != null) 
+                    tpUp.gameObject.SetActive(false);
+            }
+            
+            if (pos.x - 1 >= 0)
+            {
+                if (tpLeft != null)
                 {
-                    if (tpUp != null)
-                        tpUp.gameObject.SetActive(false);
+                    Room targetRoom = grid[pos.x - 1, pos.y];
+                    Vector3 dest = targetRoom.WorldPosition;
+                    
+                    tpLeft.SetDestination(dest);
+                    tpLeft.gameObject.SetActive(true);
                 }
+               
+            }
+             else
+            {
+                if(tpLeft != null)
+                    tpLeft.gameObject.SetActive(false);
+                                
             }
         }
     }
