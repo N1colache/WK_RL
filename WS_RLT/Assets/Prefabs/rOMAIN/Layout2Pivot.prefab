@@ -104,7 +104,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1076,7 +1076,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -6405,7 +6405,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -10128,7 +10128,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -10864,6 +10864,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 52.27794
       objectReference: {fileID: 0}
+    - target: {fileID: 3182869859401695594, guid: af21af9279f47a14db52fb91944c933d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4542303481145996375, guid: af21af9279f47a14db52fb91944c933d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4686535227801069652, guid: af21af9279f47a14db52fb91944c933d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5138312083099631781, guid: af21af9279f47a14db52fb91944c933d, type: 3}
       propertyPath: m_LocalScale.x
       value: 34
@@ -10891,6 +10903,10 @@ PrefabInstance:
     - target: {fileID: 7483884483512373125, guid: af21af9279f47a14db52fb91944c933d, type: 3}
       propertyPath: m_LocalPosition.y
       value: 23.930922
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628976792916122861, guid: af21af9279f47a14db52fb91944c933d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
