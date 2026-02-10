@@ -107,8 +107,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.65
+  m_Height: 13.77
   m_Direction: 1
   m_Center: {x: 0, y: 3.09, z: 0}
 --- !u!114 &181181503809325840
@@ -123,4 +123,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf745d3f7dc58c4eaa25d5a4da63fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportDelay: 1
+  delayBeforeTeleport: 3

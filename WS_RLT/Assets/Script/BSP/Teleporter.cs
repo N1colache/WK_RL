@@ -1,51 +1,54 @@
 using UnityEngine;
-using System.Collections;
 
 public class Teleporter : MonoBehaviour
 {
-    private Vector3 _destination;
+    private Vector3 destination;
+    [SerializeField] private float delayBeforeTeleport = 0.5f;
 
-    [SerializeField] private float teleportDelay = 0.5f;
-
-    private bool isTeleporting = false;
+    private float timer = 0f;
 
     public void SetDestination(Vector3 dest)
     {
-        _destination = dest;
+        destination = dest;
+        Debug.Log(gameObject.name + " -> destination définie vers : " + dest);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isTeleporting)
+        Debug.Log(gameObject.name + " : OnTriggerEnter avec " + other.name);
+
+        if (other.CompareTag("Player"))
         {
-            StartCoroutine(TeleportWithDelay(other.transform));
+            Debug.Log("Player détecté dans " + gameObject.name);
+            timer = 0f;
         }
     }
 
-    IEnumerator TeleportWithDelay(Transform player)
+    private void OnTriggerStay(Collider other)
     {
-        isTeleporting = true;
+        if (!other.CompareTag("Player"))
+            return;
 
-        // Optionnel : tu pourras ajouter ici un effet visuel / son
-        yield return new WaitForSeconds(teleportDelay);
+        timer += Time.deltaTime;
 
-        player.position = _destination;
+        Debug.Log(gameObject.name + " timer = " + timer);
 
-        // Petit cooldown pour éviter les boucles instantanées
-        yield return new WaitForSeconds(0.2f);
+        if (timer >= delayBeforeTeleport)
+        {
+            Debug.Log("TELEPORT DU JOUEUR vers " + destination);
 
-        isTeleporting = false;
+            other.transform.position = destination;
+
+            timer = 0f;
+        }
     }
 
-    private void OnDrawGizmos()
+    private void OnTriggerExit(Collider other)
     {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(transform.position, 0.5f);
-
-        if (_destination != Vector3.zero)
+        if (other.CompareTag("Player"))
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, _destination);
+            Debug.Log("Player sorti de " + gameObject.name);
+            timer = 0f;
         }
     }
 }
