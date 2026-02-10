@@ -3,23 +3,22 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour
 {
     private Vector3 destination;
-    [SerializeField] private float delayBeforeTeleport = 0.5f;
+
+    [SerializeField] private float delayBeforeTeleport = 1f;
 
     private float timer = 0f;
+    private bool isTeleporting = false;
 
     public void SetDestination(Vector3 dest)
     {
         destination = dest;
-        Debug.Log(gameObject.name + " -> destination définie vers : " + dest);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(gameObject.name + " : OnTriggerEnter avec " + other.name);
-
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player détecté dans " + gameObject.name);
+            // On reset le timer quand le joueur entre
             timer = 0f;
         }
     }
@@ -29,17 +28,15 @@ public class Teleporter : MonoBehaviour
         if (!other.CompareTag("Player"))
             return;
 
-        timer += Time.deltaTime;
+        // Si déjà en train de TP, on ne fait rien
+        if (isTeleporting)
+            return;
 
-        Debug.Log(gameObject.name + " timer = " + timer);
+        timer += Time.deltaTime;
 
         if (timer >= delayBeforeTeleport)
         {
-            Debug.Log("TELEPORT DU JOUEUR vers " + destination);
-
-            other.transform.position = destination;
-
-            timer = 0f;
+            TeleportPlayer(other);
         }
     }
 
@@ -47,8 +44,51 @@ public class Teleporter : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player sorti de " + gameObject.name);
+            // Si le joueur sort du trigger → on annule
             timer = 0f;
+        }
+    }
+
+    private void TeleportPlayer(Collider player)
+    {
+        isTeleporting = true;
+
+        Debug.Log("TELEPORT DU JOUEUR vers " + destination);
+
+        CharacterController cc = player.GetComponent<CharacterController>();
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+
+        if (cc != null)
+        {
+            cc.enabled = false;
+            player.transform.position = destination;
+            cc.enabled = true;
+        }
+        else if (rb != null)
+        {
+            rb.isKinematic = true;
+            player.transform.position = destination;
+            rb.isKinematic = false;
+        }
+        else
+        {
+            player.transform.position = destination;
+        }
+
+        // Reset pour pouvoir re-tp plus tard
+        timer = 0f;
+        isTeleporting = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(transform.position, 0.5f);
+
+        if (destination != Vector3.zero)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, destination);
         }
     }
 }

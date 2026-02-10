@@ -121,6 +121,22 @@ public class Controller : MonoBehaviour
         else
             dashDirection = transform.forward;
     }
+    void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return; 
+        
+        Vector3 playerPos = transform.position;
+        
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = Camera.main.WorldToScreenPoint(playerPos).z; // distance par rapport à la caméra
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(playerPos, worldPos);
+        
+        Gizmos.DrawCube(worldPos, Vector3.one * 0.2f);
+    }
+
 
    
   
