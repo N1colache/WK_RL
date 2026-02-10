@@ -271,8 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followSpeed: 2
   yOffset: 2
-  _target: {fileID: 1925891029}
-  Cameraposition: 30
+  cameraDistance: 10
 --- !u!1001 &1064502414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,17 +536,17 @@ MonoBehaviour:
   width: 6
   height: 6
   tileSize: 100
-  startRoomPrefab: {fileID: 7024230560840761266, guid: 4ab584b20b0ecda45a281a71ef73f2f2, type: 3}
-  bossRoomPrefab: {fileID: 6824204625621222847, guid: 85a4a822f4b0e374a869f5e20c059bc4, type: 3}
+  startRoomPrefab: {fileID: 1934364633879879594, guid: 63aa8860f95c9d846a3b8007418e07ec, type: 3}
+  bossRoomPrefab: {fileID: 7082653327607143740, guid: 5f3a0ad85f898ea46875b7369a3cb573, type: 3}
   middleRoomPrefabs:
   - {fileID: 5188670392947652133, guid: 79f35cb1750ebae45a456cc4ca9404ef, type: 3}
-  - {fileID: 7024230560840761266, guid: 4ab584b20b0ecda45a281a71ef73f2f2, type: 3}
-  - {fileID: 7418249499260635226, guid: a33b0f87137c19546988bb195f710073, type: 3}
+  - {fileID: 1263032162720124714, guid: 6fb66d91659c5be4fa39d947de094991, type: 3}
+  - {fileID: 6343356766479043304, guid: c80981f32816135499347982366dde45, type: 3}
   - {fileID: 7314624346918585010, guid: 40255126d6f258c429d4f87a819013e3, type: 3}
   SideRoomPrefabs:
   - {fileID: 7024230560840761266, guid: 4ab584b20b0ecda45a281a71ef73f2f2, type: 3}
   - {fileID: 6459302118176517494, guid: d3884c427acbaf1468ed69b7c4e78abf, type: 3}
-  player: {fileID: 1925891029}
+  playerPrefab: {fileID: 0}
 --- !u!4 &1209129378
 Transform:
   m_ObjectHideFlags: 0
@@ -612,11 +611,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1925891029 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5708693547233527015, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-  m_PrefabInstance: {fileID: 1064502414}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
