@@ -1,39 +1,82 @@
 using UnityEngine;
-using System.Collections;
 
 public class Teleporter : MonoBehaviour
 {
-    private Vector3 _destination;
+    private Vector3 destination;
 
-    [SerializeField] private float teleportDelay = 0.5f;
+    [SerializeField] private float delayBeforeTeleport = 1f;
 
+    private float timer = 0f;
     private bool isTeleporting = false;
 
     public void SetDestination(Vector3 dest)
     {
-        _destination = dest;
+        destination = dest;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !isTeleporting)
+        if (other.CompareTag("Player"))
         {
-            StartCoroutine(TeleportWithDelay(other.transform));
+            // On reset le timer quand le joueur entre
+            timer = 0f;
         }
     }
 
-    IEnumerator TeleportWithDelay(Transform player)
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        // Si déjà en train de TP, on ne fait rien
+        if (isTeleporting)
+            return;
+
+        timer += Time.deltaTime;
+
+        if (timer >= delayBeforeTeleport)
+        {
+            TeleportPlayer(other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Si le joueur sort du trigger → on annule
+            timer = 0f;
+        }
+    }
+
+    private void TeleportPlayer(Collider player)
     {
         isTeleporting = true;
 
-        // Optionnel : tu pourras ajouter ici un effet visuel / son
-        yield return new WaitForSeconds(teleportDelay);
+        Debug.Log("TELEPORT DU JOUEUR vers " + destination);
 
-        player.position = _destination;
+        CharacterController cc = player.GetComponent<CharacterController>();
+        Rigidbody rb = player.GetComponent<Rigidbody>();
 
-        // Petit cooldown pour éviter les boucles instantanées
-        yield return new WaitForSeconds(0.2f);
+        if (cc != null)
+        {
+            cc.enabled = false;
+            player.transform.position = destination;
+            cc.enabled = true;
+        }
+        else if (rb != null)
+        {
+            rb.isKinematic = true;
+            player.transform.position = destination;
+            rb.isKinematic = false;
+        }
+        else
+        {
+            player.transform.position = destination;
+        }
 
+        // Reset pour pouvoir re-tp plus tard
+        timer = 0f;
         isTeleporting = false;
     }
 
@@ -42,10 +85,10 @@ public class Teleporter : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(transform.position, 0.5f);
 
-        if (_destination != Vector3.zero)
+        if (destination != Vector3.zero)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, _destination);
+            Gizmos.DrawLine(transform.position, destination);
         }
     }
 }

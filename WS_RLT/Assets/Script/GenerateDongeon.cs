@@ -38,8 +38,9 @@ public class GridDungeon : MonoBehaviour
     [SerializeField] private List<GameObject> SideRoomPrefabs;
 
     [Header("Player")]
-    [SerializeField] private GameObject playerPrefab;
-    
+    [SerializeField] private GameObject player;
+    private GameObject currentPlayer;
+    [SerializeField] private GameObject playerCamera;
 
     private Room[,] grid;
 
@@ -49,6 +50,7 @@ public class GridDungeon : MonoBehaviour
 
     private void Start()
     {
+        playerCamera.SetActive(false);
         GenerateGrid();
     }
 
@@ -62,6 +64,7 @@ public class GridDungeon : MonoBehaviour
 
     void GenerateGrid()
     {
+        
         foreach (Transform child in _generationContainer.transform)
         {
             Destroy(child.gameObject);
@@ -139,50 +142,47 @@ public class GridDungeon : MonoBehaviour
         {
             if (room.GridPosition.x + 1 < width)
             {
-                Debug.Log("Left Room");
+                
                 leftTPRoom.Add(room);
               
             }
 
             if (room.GridPosition.x - 1 < width)
             {
-                Debug.Log("Right Room");
+                
                 rightTPRoom.Add(room);
             }
 
             if (room.GridPosition.y + 1 < height)
             {
-               Debug.Log("Top Room"); 
+               
                TopTPRoom.Add(room);
             }
         }
          InstantiateRoom();
          ConnectTeleporters();
-        Debug.Log("Left rooms count : " + Leftroom.Count);
-        Debug.Log("Right rooms count : " + Rightroom.Count);
-        Debug.Log("Side room number" + sideRoom.Count);
-        // Spawn player dans la start room
-        Room startRoom = grid[startPos.x, startPos.y];
+       
+         Room startRoom = grid[startPos.x, startPos.y];
 
-        if (startRoom.InstantiatedChunk != null)
-        {
-            Transform spawnPoint = startRoom.InstantiatedChunk.transform.Find("PlayerSpawn");
+         if (startRoom.InstantiatedChunk != null)
+         {
+             Transform spawnPoint = startRoom.InstantiatedChunk.transform.Find("PlayerSpawn");
 
-            Vector3 spawnPosition;
+             Vector3 spawnPosition;
 
-            if (spawnPoint != null)
-            {
-                spawnPosition = spawnPoint.position;
-            }
-            else
-            {
-                spawnPosition = startRoom.WorldPosition;
-                
-            }
+             if (spawnPoint != null)
+             {
+                 spawnPosition = spawnPoint.position;
+             }
+             else
+             {
+                 spawnPosition = startRoom.WorldPosition;
+             }
 
-            // Instanciation du joueur
-            Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
-        }
+             // On déplace simplement le joueur existant
+             player.transform.position = spawnPosition;
+             playerCamera.SetActive(true);
+         }
 
         
 
