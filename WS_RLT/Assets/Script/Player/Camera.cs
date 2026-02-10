@@ -21,11 +21,7 @@ public class CameraFollow : MonoBehaviour
             return;
         }
 
-        Vector3 newPos = new Vector3(
-            player.position.x,
-            player.position.y + yOffset,
-            -cameraDistance
-        );
+        Vector3 newPos = new Vector3(player.position.x,player.position.y + yOffset, player.position.z -cameraDistance);
 
         transform.position = Vector3.Slerp(
             transform.position,
