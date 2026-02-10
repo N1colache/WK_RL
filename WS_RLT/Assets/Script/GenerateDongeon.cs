@@ -18,7 +18,7 @@ public class GridDungeon : MonoBehaviour
 
         public RoomType Type;
 
-        public GameObject InstantiatedChunk;
+        [SerializeField] public GameObject InstantiatedChunk;
         public Transform SpawnPoint;
     }
     [SerializeField] private GameObject _generationContainer;   

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    private Vector3 destination;
+    [SerializeField] private Vector3 destination;
 
     [SerializeField] private float delayBeforeTeleport = 1f;
 
