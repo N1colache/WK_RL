@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 1318212208}
   - component: {fileID: 1318212207}
   - component: {fileID: 1318212206}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -647,6 +647,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 821126668554438891, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395674343262750742, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591046711922530910, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: distance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591046711922530910, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7126935021327729806, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.19
@@ -702,8 +718,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8755056696645687865, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1823517710}
   m_SourcePrefab: {fileID: 100100000, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+--- !u!4 &1823517708 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2074918675546142543, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+  m_PrefabInstance: {fileID: 1823517707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1823517709 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8755056696645687865, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+  m_PrefabInstance: {fileID: 1823517707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1823517710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823517709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bdb62513c84e5f4b995aef8ff12ad75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
+  firePoint: {fileID: 1823517708}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

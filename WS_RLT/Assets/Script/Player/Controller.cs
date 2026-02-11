@@ -1,21 +1,18 @@
-
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class Controller : MonoBehaviour
 {
     private Inputs _inputs;
 
     [Header("Déplacement")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float moveSpeed = 5f;
 
     [Header("Saut")]
-    [SerializeField] private float _jumpHeight = 2f;
-    [SerializeField] private float _gravity = -9.81f;
-    private float _jumpTimeDelta;
-    [SerializeField] private float jumpTimeTotal = 0.1f;
-    
+    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float coyoteTime = 0.2f; // temps après avoir quitté le sol pour encore sauter
+    private float coyoteTimer;
+
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 10f;
     [SerializeField] private float dashTime = 0.2f;
@@ -26,87 +23,82 @@ public class Controller : MonoBehaviour
     private float cooldownTimer;
     private Vector3 dashDirection;
 
-
-
     private Vector3 velocity;
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private GroundDetector _groundDetector;
-    public Rigidbody _rb;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         _inputs = GetComponent<Inputs>();
     }
-   
-    
+
     void Update()
     {
-        if (_inputs._dashing && !isDashing && cooldownTimer <= 0)
-        {
-            if (!isDashing && _groundDetector)
-            {
-                 StartDash();
-            }
-           
-        }
-       
+        if (controller == null || _inputs == null) return;
 
-        if (_groundDetector.touched)
+        // -----------------------------
+        // Dash
+        // -----------------------------
+        if (_inputs._dashing && !isDashing && cooldownTimer <= 0f && _groundDetector.touched)
         {
-            _jumpTimeDelta -= Time.deltaTime;
-        
+            StartDash();
         }
-        else
-        {
-            _jumpTimeDelta = jumpTimeTotal;
-        }
+
         if (isDashing)
         {
             controller.Move(dashDirection * dashSpeed * Time.deltaTime);
-
             dashTimer -= Time.deltaTime;
-
-            if (dashTimer <= 0)
+            if (dashTimer <= 0f)
             {
                 isDashing = false;
             }
 
-            return; // on ignore le reste du mouvement pendant le dash
+            // Ignore le reste du mouvement pendant le dash
+            return;
         }
-        if (cooldownTimer > 0)
-        {
+
+        if (cooldownTimer > 0f)
             cooldownTimer -= Time.deltaTime;
-        }
 
+        
+        // Coyote time pour jump
+        
+        if (_groundDetector.touched)
+            coyoteTimer = coyoteTime;
+        else
+            coyoteTimer -= Time.deltaTime;
 
+        
         // Movement
+        
         Vector2 input = _inputs.Move;
-
-        Vector3 move = new Vector3(input.x, 0, 0);
-        
-
+        Vector3 move = new Vector3(input.x, 0, 0); // 2.5D : horizontal seulement
         controller.Move(move * moveSpeed * Time.deltaTime);
-        if (move.magnitude > 0.1f)
-        {
+
+        // Rotation vers la direction du mouvement
+        if (move.sqrMagnitude > 0.01f)
             transform.rotation = Quaternion.LookRotation(move);
-        }
 
+        
         // Jump
-        if (_inputs.Jump && _groundDetector.touched && _jumpTimeDelta <= 0.1f)
+        
+        if (_inputs.Jump && coyoteTimer > 0f)
         {
-            velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            coyoteTimer = 0f; // empêcher double jump
         }
 
+        
         // Gravity
-        velocity.y += _gravity * Time.deltaTime;
+        
+        velocity.y += gravity * Time.deltaTime;
 
+        // Appliquer la gravité
         controller.Move(velocity * Time.deltaTime);
-        
-        
-        
     }
+
     void StartDash()
     {
         isDashing = true;
@@ -115,29 +107,29 @@ public class Controller : MonoBehaviour
 
         Vector2 input = _inputs.Move;
 
-        // Si le joueur ne bouge pas, dash vers l’avant
-        if (input.magnitude > 0.1f)
+        // Dash dans la direction du mouvement ou vers l’avant
+        if (input.sqrMagnitude > 0.01f)
             dashDirection = new Vector3(input.x, 0, input.y).normalized;
         else
             dashDirection = transform.forward;
     }
+
+    
+    // Gizmo pour visualiser la souris
+    
     void OnDrawGizmos()
     {
-        if (!Application.isPlaying) return; 
-        
+        if (!Application.isPlaying) return;
+
+        if (Camera.main == null) return;
+
         Vector3 playerPos = transform.position;
-        
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.WorldToScreenPoint(playerPos).z; // distance par rapport à la caméra
+        mousePos.z = Camera.main.WorldToScreenPoint(playerPos).z;
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(playerPos, worldPos);
-        
         Gizmos.DrawCube(worldPos, Vector3.one * 0.2f);
     }
-
-
-   
-  
 }
