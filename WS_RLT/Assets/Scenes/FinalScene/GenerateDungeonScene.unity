@@ -240,6 +240,64 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &260042208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260042210}
+  - component: {fileID: 260042209}
+  m_Layer: 0
+  m_Name: DungeonManager (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &260042209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260042208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdaa51288f87f241bf4576e689403af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _generationContainer: {fileID: 260042208}
+  width: 5
+  height: 5
+  tileSize: 100
+  startRoomPrefab: {fileID: 5702423172695193927, guid: 8dc4159bc6cd2dc4aab1f27b6d8f548d, type: 3}
+  bossRoomPrefab: {fileID: 6807191345636954780, guid: d85de42a13fc5c242b399c2c33371489, type: 3}
+  middleRoomPrefabs:
+  - {fileID: 3952925057848084926, guid: 9a181523ee8671c449b2eaab4f6580eb, type: 3}
+  - {fileID: 1138864734491389122, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+  sideRoomPrefabs:
+  - {fileID: 1556654396128839565, guid: 0ac1fef21c838e64a892c7a19c67f4f3, type: 3}
+  - {fileID: 7801726228433588449, guid: 465361427c7beae459a9ce73191e9f18, type: 3}
+  player: {fileID: 1995845815}
+  playerCamera: {fileID: 944662147}
+--- !u!4 &260042210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260042208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 76.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417218003
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 417218005}
-  - component: {fileID: 417218004}
+  - component: {fileID: 417218006}
   m_Layer: 0
   m_Name: DungeonManager
   m_TagString: Untagged
@@ -257,7 +315,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &417218004
+--- !u!4 &417218005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417218003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 76.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &417218006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -272,32 +345,17 @@ MonoBehaviour:
   _generationContainer: {fileID: 417218003}
   width: 5
   height: 5
-  tileSize: 120
+  tileSize: 100
   startRoomPrefab: {fileID: 5702423172695193927, guid: 8dc4159bc6cd2dc4aab1f27b6d8f548d, type: 3}
   bossRoomPrefab: {fileID: 6807191345636954780, guid: d85de42a13fc5c242b399c2c33371489, type: 3}
   middleRoomPrefabs:
-  - {fileID: 1138864734491389122, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
   - {fileID: 1556654396128839565, guid: 0ac1fef21c838e64a892c7a19c67f4f3, type: 3}
+  - {fileID: 1138864734491389122, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
   SideRoomPrefabs:
   - {fileID: 3952925057848084926, guid: 9a181523ee8671c449b2eaab4f6580eb, type: 3}
-  - {fileID: 7418249499260635226, guid: a33b0f87137c19546988bb195f710073, type: 3}
+  - {fileID: 1556654396128839565, guid: 0ac1fef21c838e64a892c7a19c67f4f3, type: 3}
   player: {fileID: 1995845815}
   playerCamera: {fileID: 944662147}
---- !u!4 &417218005
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417218003}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &713282635
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,5 +478,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 87883545}
   - {fileID: 417218005}
+  - {fileID: 260042210}
   - {fileID: 713282637}
   - {fileID: 1158056796}

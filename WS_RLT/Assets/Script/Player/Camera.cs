@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
 
     private Transform player;
 
-    void Start()
+    public void Awake()
     {
         FindPlayer();
     }
@@ -37,6 +37,11 @@ public class CameraFollow : MonoBehaviour
         if (found != null)
         {
             player = found.transform;
+            Debug.Log("Player found");
+        }
+        else
+        {
+            Debug.Log("not found");
         }
     }
 }

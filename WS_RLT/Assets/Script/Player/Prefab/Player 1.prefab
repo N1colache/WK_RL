@@ -225,6 +225,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7126935021327729806}
     m_Modifications:
+    - target: {fileID: 1363856602023988338, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.199
+      objectReference: {fileID: 0}
     - target: {fileID: 3823742071600495622, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
       propertyPath: dashSpeed
       value: 20
@@ -289,6 +293,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 72
       objectReference: {fileID: 0}
+    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: distance
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1155597553095973201, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
     - {fileID: 5737489668295255850, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
@@ -325,11 +333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb023d6c3fb9a6a438722cfd3159d92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &7921847977204782898 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 5765365408917066582, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-  m_PrefabInstance: {fileID: 4463840773579965540}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8271956935155695747 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5708693547233527015, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
@@ -353,15 +356,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  _jumpHeight: 2
-  _gravity: -9.81
-  jumpTimeTotal: 0.1
+  jumpHeight: 2
+  gravity: -9.81
+  coyoteTime: 0.2
   dashSpeed: 10
   dashTime: 0.2
   dashCooldown: 1
   controller: {fileID: 909590302536236302}
   _groundDetector: {fileID: 6591046711922530910}
-  _rb: {fileID: 7921847977204782898}
 --- !u!114 &2863485012876009205
 MonoBehaviour:
   m_ObjectHideFlags: 0

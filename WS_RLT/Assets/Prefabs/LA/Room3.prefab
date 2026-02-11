@@ -283,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 1556654396128839565}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.31078, y: 24.337486, z: -23.942497}
+  m_LocalPosition: {x: 16.31078, y: 47.7, z: -23.942497}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5090,6 +5090,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 19.85
       objectReference: {fileID: 0}
+    - target: {fileID: 283742824064212149, guid: c80981f32816135499347982366dde45, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 298001875680307186, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
       value: 19.85
@@ -5238,6 +5242,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 19.85
       objectReference: {fileID: 0}
+    - target: {fileID: 2995242194158044459, guid: c80981f32816135499347982366dde45, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3074706383113458873, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
       value: 19.85
@@ -5257,6 +5265,10 @@ PrefabInstance:
     - target: {fileID: 3514065457996207856, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
       value: 19.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3545993353678341713, guid: c80981f32816135499347982366dde45, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3565784513231947836, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5625,6 +5637,10 @@ PrefabInstance:
     - target: {fileID: 8809215774077271740, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
       value: 19.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 8927589428040724192, guid: c80981f32816135499347982366dde45, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9065602151744797610, guid: c80981f32816135499347982366dde45, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7574,7 +7590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9170209364635623398, guid: 56001653f294d3b4f8b3c9f102569189, type: 3}
       propertyPath: m_Name
-      value: 'TeleporterLeft '
+      value: TeleporterDown
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

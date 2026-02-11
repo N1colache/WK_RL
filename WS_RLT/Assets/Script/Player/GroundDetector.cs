@@ -8,23 +8,19 @@ public class GroundDetector : MonoBehaviour
     
     public bool touched;
     
-    // Update is called once per frame
+    [SerializeField] private LayerMask groundLayer;
+
     void Update()
     {
-        touched = Physics.Raycast(transform.position, Vector3.down, distance);
+        touched = Physics.Raycast(transform.position, Vector3.down, distance, groundLayer);
+        Debug.Log(touched);
     }
 
     private void OnDrawGizmos()
     {
-        if (touched)
-        {
-            Gizmos.color = Color.green;
-        }
-        else
-        {
-            Gizmos.color = Color.yellow;
-        }
-        Gizmos.DrawRay(transform.position, Vector3.down * distance);
+        Gizmos.color = touched ? Color.green : Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * distance);
+        Gizmos.DrawSphere(transform.position + Vector3.down * distance, 0.05f);
         
     }
 }
