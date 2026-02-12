@@ -2,17 +2,29 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [Header("Health")]
-    [SerializeField] private float health = 100f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private int maxHealth = 10;
+    private int currentHealth;
+
     void Start()
     {
-        
+        currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int amount)
     {
-        
+        currentHealth -= amount;
+
+        Debug.Log(gameObject.name + " prend " + amount + " dégâts");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log(gameObject.name + " est mort");
+        Destroy(gameObject);
     }
 }

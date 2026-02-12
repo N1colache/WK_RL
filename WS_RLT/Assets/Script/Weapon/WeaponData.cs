@@ -72,6 +72,7 @@ public class WeaponData : MonoBehaviour
     public void UnlockBurst()
     {
         burstUnlocked = true;
+        
         Debug.Log("Burst débloqué !");
     }
 }

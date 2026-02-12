@@ -97,9 +97,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
+                    "name": "ShootLeft",
                     "type": "Button",
                     "id": "7a6c661c-74c8-4e4b-98ed-9b8497b31056",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShootRight",
+                    "type": "Button",
+                    "id": "d051c6c7-91c4-4d36-9f7b-65b9abbff066",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -510,7 +519,18 @@
                     "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "ShootLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "013173d0-f58d-45bc-aab1-7011d72097d1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShootRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

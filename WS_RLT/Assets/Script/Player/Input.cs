@@ -14,7 +14,8 @@ public class Inputs : MonoBehaviour
     
     public bool _dashing;
 
-    public bool _shoot;
+    public bool _shootLeft;
+    public bool _shootRight;
 
     private void Start()
     {
@@ -42,12 +43,18 @@ public class Inputs : MonoBehaviour
         _dashing = value.isPressed;
     }
 
-    public void OnShoot(InputValue value)
+    public void OnShootLeft(InputValue value)
     {
-        _shoot = value.isPressed;
+        if (value.isPressed)
+        _shootLeft = true;
         Debug.Log("Shoot");
     }
-    
+    public void OnShootRight(InputValue value)
+    {
+        if (value.isPressed)
+            _shootRight = true;
+        Debug.Log("Shoot");
+    }
    
     
     

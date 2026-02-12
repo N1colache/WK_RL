@@ -1,16 +1,35 @@
 using UnityEngine;
 
-public class Dommage : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] private int damage = 1;
+    [SerializeField] private float lifeTime = 5f;
+
     void Start()
     {
-        
+        Destroy(gameObject, lifeTime); // détruit si ne touche rien
+    }
+    
+    private GameObject owner;
+
+    public void SetOwner(GameObject shooter)
+    {
+        owner = shooter;
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnCollisionEnter(Collision collision)
     {
-        
+        if (collision.gameObject == owner)
+            return;
+
+        Health health = collision.gameObject.GetComponent<Health>();
+
+        if (health != null)
+        {
+            health.TakeDamage(damage);
+        }
+
+        Destroy(gameObject);
     }
+
 }
