@@ -1,36 +1,77 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapons/WeaponData")]
+
 public class WeaponData : MonoBehaviour
 {
-    public enum WeaponType
+    [SerializeField] private GameObject pistolPrefab;
+    [SerializeField] private GameObject burstPrefab;
+    [SerializeField] private GameObject shotgunPrefab;
+
+    private GameObject pistol;
+    private GameObject burst;
+    private GameObject shotgun;
+
+    private GameObject currentWeapon;
+
+    [SerializeField] private bool burstUnlocked = false;
+
+    void Start()
     {
-        Pistol,
-        Burst,
-        shotgun
+        pistol = Instantiate(pistolPrefab, transform);
+        burst = Instantiate(burstPrefab, transform);
+        shotgun = Instantiate(shotgunPrefab, transform);
+
+        SetupWeapon(pistol);
+        SetupWeapon(burst);
+        SetupWeapon(shotgun);
+
+        EquipWeapon(pistol);
+    }
+
+    void Update()
+    {
+        // Clique gauche → Pistol
+        if (Input.GetMouseButtonDown(0))
+        {
+            EquipWeapon(pistol);
+        }
+
+        // Clique droit → Burst si acheté
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (burstUnlocked)
+            {
+                EquipWeapon(burst);
+            }
+            else
+            {
+                Debug.Log("Burst non acheté !");
+            }
+        }
+    }
+
+    void SetupWeapon(GameObject weapon)
+    {
+        weapon.SetActive(false);
+        weapon.transform.localPosition = new Vector3(1.5f, 2.8f, 0);
+        weapon.transform.localRotation = Quaternion.identity;
+        weapon.transform.localScale = Vector3.one;
         
     }
 
-    
-    
-    
-    public string weaponName;
-    public WeaponType weaponType;
+    void EquipWeapon(GameObject weaponToEquip)
+    {
+        pistol.SetActive(false);
+        burst.SetActive(false);
+        shotgun.SetActive(false);
 
-    [Header("Projectile")]
-    public GameObject bulletPrefab;
-    public float bulletSpeed = 20f;
+        weaponToEquip.SetActive(true);
+        currentWeapon = weaponToEquip;
+    }
 
-    [Header("Ammo")] 
-    public int CurrentAmo;
-    public int maxAmmo = 30;
-    public float reloadTime = 2f;
-
-    [Header("Fire Rate")]
-    public float fireRate = 0.2f;
-
-    [Header("Burst Settings")]
-    public int bulletsPerBurst = 3;
-    public float timeBetweenBullets = 0.1f;
-    
-
+    // Appelé par le Shop
+    public void UnlockBurst()
+    {
+        burstUnlocked = true;
+        Debug.Log("Burst débloqué !");
+    }
 }
