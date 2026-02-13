@@ -21,6 +21,10 @@ public class Fire : MonoBehaviour
     [SerializeField] private float reloadTime = 10;
     private float reloadTimer = 0f;
     
+    [Header("Shotgun")]
+    [SerializeField] private int pelletCount = 5;      // nombre de projectiles
+    [SerializeField] private float spreadAmount = 0.2f; // largeur du spread
+
     private int currentAmmo;
     private bool isReloading = false;
 
@@ -175,14 +179,22 @@ public class Fire : MonoBehaviour
     }
     public void ShootShotgunAt(Vector3 targetPosition)
     {
-        Vector3 direction = (targetPosition - barrel.position).normalized;
-        direction.y = 0; // uniquement sur X
+        if (currentAmmo <= 0) return;
 
-        float spreadAngle = 15f; // angle entre les balles
-        for (int i = -1; i <= 1; i++)
+        float directionY = Mathf.Sign(targetPosition.y - barrel.position.y);
+
+        for (int i = 0; i < pelletCount; i++)
         {
-            Quaternion spreadRotation = Quaternion.Euler(0, i * spreadAngle, 0) * Quaternion.LookRotation(direction);
-            GameObject bullet = Instantiate(bulletPrefab, barrel.position, spreadRotation);
+            // Spread aléatoire autour de la direction principale
+            float randomSpread = Random.Range(-spreadAmount, spreadAmount);
+
+            Vector3 direction = new Vector3(
+                0,
+                directionY + randomSpread,
+                0
+            ).normalized;
+
+            GameObject bullet = Instantiate(bulletPrefab, barrel.position, Quaternion.identity);
 
             Bullet bulletScript = bullet.GetComponent<Bullet>();
             if (bulletScript != null)
@@ -190,8 +202,11 @@ public class Fire : MonoBehaviour
 
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             if (rb != null)
-                rb.AddForce(spreadRotation * Vector3.forward * bulletSpeed);
+                rb.AddForce(direction * bulletSpeed, ForceMode.Impulse);
         }
+
+        currentAmmo--;
     }
+
 
 }
