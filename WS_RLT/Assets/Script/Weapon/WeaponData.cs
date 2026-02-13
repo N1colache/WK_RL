@@ -13,12 +13,14 @@ public class WeaponData : MonoBehaviour
     private GameObject currentWeapon;
 
     [SerializeField] private bool burstUnlocked = false;
+    [SerializeField] private Transform firePoint;
+
 
     void Start()
     {
-        pistol = Instantiate(pistolPrefab, transform);
-        burst = Instantiate(burstPrefab, transform);
-        shotgun = Instantiate(shotgunPrefab, transform);
+        pistol = Instantiate(pistolPrefab, firePoint);
+        burst = Instantiate(burstPrefab, firePoint);
+        shotgun = Instantiate(shotgunPrefab, firePoint);
 
         SetupWeapon(pistol);
         SetupWeapon(burst);
@@ -52,9 +54,9 @@ public class WeaponData : MonoBehaviour
     void SetupWeapon(GameObject weapon)
     {
         weapon.SetActive(false);
-        weapon.transform.localPosition = new Vector3(1.5f, 2.8f, 0);
+        weapon.transform.localPosition = new Vector3(0, 0, 0);
         weapon.transform.localRotation = Quaternion.identity;
-        weapon.transform.localScale = Vector3.one;
+        
         
     }
 

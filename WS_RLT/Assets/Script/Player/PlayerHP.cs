@@ -3,20 +3,22 @@ using UnityEngine.UI;
 
 public class PlayerHP : MonoBehaviour
 {
-    public Slider healthBarSlider;
-    public int maxHP = 100;
-    public int currentHP;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Slider healthBarSlider;
+    private Health health;
+
+    void Awake()
     {
-        currentHP = maxHP;
+        health = GetComponent<Health>();
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        healthBarSlider.maxValue = health.GetCurrentHealth();
+        healthBarSlider.value = health.GetCurrentHealth();
+    }
+
     void Update()
     {
-        healthBarSlider.value = currentHP;
-        healthBarSlider.maxValue = maxHP;
+        healthBarSlider.value = health.GetCurrentHealth();
     }
 }
