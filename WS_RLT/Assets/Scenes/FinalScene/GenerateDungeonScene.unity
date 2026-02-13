@@ -292,10 +292,13 @@ MonoBehaviour:
   bossRoomPrefab: {fileID: 6807191345636954780, guid: d85de42a13fc5c242b399c2c33371489, type: 3}
   middleRoomPrefabs:
   - {fileID: 1556654396128839565, guid: 0ac1fef21c838e64a892c7a19c67f4f3, type: 3}
-  - {fileID: 1138864734491389122, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+  - {fileID: 8803206845506209786, guid: 7079d7d0cda39654296ff5eea1caf1cf, type: 3}
+  - {fileID: 7137263567695406156, guid: 433ea1e537cf5cf41ba7c086067b70bc, type: 3}
+  - {fileID: 7573358002228074954, guid: de19a90c796c16544a703c80e235553c, type: 3}
   SideRoomPrefabs:
   - {fileID: 3952925057848084926, guid: 9a181523ee8671c449b2eaab4f6580eb, type: 3}
   - {fileID: 1556654396128839565, guid: 0ac1fef21c838e64a892c7a19c67f4f3, type: 3}
+  - {fileID: 6857209352958470967, guid: d2a12f4be14827e4aabdb9ad7b9c0806, type: 3}
   player: {fileID: 1995845815}
   playerCamera: {fileID: 944662147}
 --- !u!1 &713282635
@@ -364,6 +367,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 6591046711922530910, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: distance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7126935021327729806, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -403,6 +410,14 @@ PrefabInstance:
     - target: {fileID: 7126935021327729806, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808056225599540067, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: yOffset
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7808056225599540067, guid: b2169eeec7f779b4ebbf3caf7e93e679, type: 3}
+      propertyPath: cameraDistance
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -173,4 +173,25 @@ public class Fire : MonoBehaviour
 
         FireSingleBullet(direction);
     }
+    public void ShootShotgunAt(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - barrel.position).normalized;
+        direction.y = 0; // uniquement sur X
+
+        float spreadAngle = 15f; // angle entre les balles
+        for (int i = -1; i <= 1; i++)
+        {
+            Quaternion spreadRotation = Quaternion.Euler(0, i * spreadAngle, 0) * Quaternion.LookRotation(direction);
+            GameObject bullet = Instantiate(bulletPrefab, barrel.position, spreadRotation);
+
+            Bullet bulletScript = bullet.GetComponent<Bullet>();
+            if (bulletScript != null)
+                bulletScript.SetOwner(transform.root.gameObject);
+
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            if (rb != null)
+                rb.AddForce(spreadRotation * Vector3.forward * bulletSpeed);
+        }
+    }
+
 }
