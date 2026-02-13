@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Fire : MonoBehaviour
 {
-    private Inputs _inputs;
+    public Inputs _inputs;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform barrel;
     [SerializeField] private string currentWeapon = "Pistol";
@@ -14,40 +14,91 @@ public class Fire : MonoBehaviour
     private int burstRemaining = 0;
     private float burstTimer = 0f;
     private bool isBursting = false;
+    
+    [Header("Ammo")]
+    [SerializeField] private int magazineSize = 5;
+    [SerializeField] private int magazineCapacity = 20;
+    [SerializeField] private float reloadTime = 10;
+    private float reloadTimer = 0f;
+    
+    private int currentAmmo;
+    private bool isReloading = false;
 
     void Start()
     {
         _inputs = GetComponentInParent<Inputs>();
+        currentAmmo = magazineSize;
     }
 
     void Update()
     {
+        Debug.Log(currentAmmo);
+        Debug.Log(magazineSize);
         // Timer pour burst
         if (isBursting)
         {
             burstTimer -= Time.deltaTime;
             if (burstTimer <= 0f && burstRemaining > 0)
             {
-                FireSingleBullet(GetMouseDirectionX());
+                if (currentAmmo > 0)
+                {
+                    FireSingleBullet(GetMouseDirectionX());
+                    currentAmmo--;
+                    burstRemaining--;
+                    burstTimer = burstDelay;
+                }
+                else
+                {
+                    Debug.Log("Plus de munitions !");
+                    if (!isReloading)
+                        StartReload();
 
-                burstRemaining--;
-                burstTimer = burstDelay;
+                    isBursting = false;
+                }
             }
             if (burstRemaining == 0)
                 isBursting = false;
         }
 
         // Input pour tirer
-        if (currentWeapon == "Pistol" && _inputs._shootLeft)
+        if (currentWeapon == "Pistol" && _inputs._shootLeft && !isReloading)
         {
-            FireSingleBullet(GetMouseDirectionX());
-
+            if (currentAmmo > 0)
+            {
+                FireSingleBullet(GetMouseDirectionX());
+                currentAmmo--;
+            }
+            else
+            {
+                Debug.Log("Plus de munitions !");
+                StartReload();
+            }
             _inputs._shootLeft = false;
-        }
-        else if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
+        } 
+        if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
         {
             StartBurst();
             _inputs._shootRight = false;
+        }
+        // Gestion reload timer
+        if (isReloading)
+        {
+            reloadTimer -= Time.deltaTime;
+
+            if (reloadTimer <= 0f)
+            {
+                int bulletsNeeded = magazineSize - currentAmmo;
+                int bulletsToLoad = Mathf.Min(bulletsNeeded, magazineCapacity);
+
+                currentAmmo += bulletsToLoad;
+                magazineCapacity -= bulletsToLoad;
+
+                isReloading = false;
+
+                Debug.Log("Reload terminé");
+            }
+
+            return; // empêche de tirer pendant reload
         }
     }
 
@@ -100,5 +151,26 @@ public class Fire : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
             rb.AddForce(direction * bulletSpeed);
+    }
+
+    public void StartReload()
+    {
+        if (isReloading) return;
+        if (magazineCapacity <= 0) return;
+        if (currentAmmo == magazineSize) return;
+
+        isReloading = true;
+        reloadTimer = reloadTime;
+        
+        currentAmmo = magazineSize;
+        magazineCapacity = magazineCapacity - magazineSize;
+
+    }
+    public void ShootAt(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - barrel.position).normalized;
+        direction.y = 0;
+
+        FireSingleBullet(direction);
     }
 }
