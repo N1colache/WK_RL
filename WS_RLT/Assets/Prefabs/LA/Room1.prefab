@@ -1,5 +1,69 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1060143223015655654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2403061631390260950}
+  - component: {fileID: 6736808057465255309}
+  m_Layer: 0
+  m_Name: NavMesh Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2403061631390260950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060143223015655654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7492179790292315454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6736808057465255309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060143223015655654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 72
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 2279e33973319d54abe5320f94eee7eb, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &8803206845506209786
 GameObject:
   m_ObjectHideFlags: 0
@@ -30,6 +94,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6285618707933042097}
+  - {fileID: 2403061631390260950}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4224012800372205648
@@ -48,9 +113,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: OLD_Room1
       objectReference: {fileID: 0}
+    - target: {fileID: 1280476082762474259, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.57
+      objectReference: {fileID: 0}
     - target: {fileID: 1460582907371872030, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263761600266667663, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 68.12
       objectReference: {fileID: 0}
     - target: {fileID: 3099459497205545178, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
@@ -60,6 +133,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 1.1494
       objectReference: {fileID: 0}
+    - target: {fileID: 4515086621240437550, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 68.06
+      objectReference: {fileID: 0}
     - target: {fileID: 6403209211476470201, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -67,6 +144,22 @@ PrefabInstance:
     - target: {fileID: 6608587665495944089, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_LocalScale.y
       value: 1.1586
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938810305705587460, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Height
+      value: 22.581036
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938810305705587460, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Radius
+      value: 1.2556736
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938810305705587460, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Center.x
+      value: -0.60567355
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938810305705587460, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Center.y
+      value: 7.495492
       objectReference: {fileID: 0}
     - target: {fileID: 7372541694857165912, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
@@ -116,6 +209,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7990738333058127512, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Height
+      value: 23.21373
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990738333058127512, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Radius
+      value: 1.1536305
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990738333058127512, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Center.x
+      value: 0.5036304
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990738333058127512, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_Center.y
+      value: 7.8118587
+      objectReference: {fileID: 0}
     - target: {fileID: 8442352561500825718, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -123,6 +232,10 @@ PrefabInstance:
     - target: {fileID: 9090471981869812526, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9136377331002988340, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.63
       objectReference: {fileID: 0}
     - target: {fileID: 9143076598651738033, guid: 45d9f32dedd42db4583209b583a30787, type: 3}
       propertyPath: m_Enabled

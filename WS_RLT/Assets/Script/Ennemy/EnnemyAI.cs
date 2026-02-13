@@ -8,6 +8,10 @@ public class EnnemyAI : MonoBehaviour
     public Transform player;
 
     public LayerMask whatsIsGround, whatsIsPlayer;
+    
+    public enum EnemyWeapon { Pistol, Shotgun, Burst }
+    public EnemyWeapon currentWeapon = EnemyWeapon.Pistol;
+
 
     // Patrolling
     public Vector3 walkPoint;
@@ -83,17 +87,29 @@ public class EnnemyAI : MonoBehaviour
     {
         agent.ResetPath(); // Stop mouvement
 
-        // Tourne l’ennemi vers le joueur (seulement sur X)
         Vector3 lookPos = new Vector3(player.position.x, transform.position.y, transform.position.z);
         transform.LookAt(lookPos);
 
         if (!alreadyAttacked && fire != null)
         {
-            fire.ShootAt(player.position);
+            switch (currentWeapon)
+            {
+                case EnemyWeapon.Pistol:
+                    fire.ShootAt(player.position);
+                    break;
+                case EnemyWeapon.Burst:
+                    fire.ShootAt(player.position); // déjà géré en burst dans Fire
+                    break;
+                case EnemyWeapon.Shotgun:
+                    fire.ShootShotgunAt(player.position);
+                    break;
+            }
+
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
+
 
     private void ResetAttack()
     {
