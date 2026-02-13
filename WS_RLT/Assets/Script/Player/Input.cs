@@ -51,7 +51,7 @@ public class Inputs : MonoBehaviour
     }
     public void OnShootRight(InputValue value)
     {
-        if (value.isPressed) 
+        if (value.isPressed)
             _shootRight = true;
         Debug.Log("Shoot");
     }

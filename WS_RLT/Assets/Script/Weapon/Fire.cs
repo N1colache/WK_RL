@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Fire : MonoBehaviour
 {
-    public Inputs _inputs;
+    private Inputs _inputs;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform barrel;
     [SerializeField] private string currentWeapon = "Pistol";
@@ -14,91 +14,40 @@ public class Fire : MonoBehaviour
     private int burstRemaining = 0;
     private float burstTimer = 0f;
     private bool isBursting = false;
-    
-    [Header("Ammo")]
-    [SerializeField] private int magazineSize = 5;
-    [SerializeField] private int magazineCapacity = 20;
-    [SerializeField] private float reloadTime = 10;
-    private float reloadTimer = 0f;
-    
-    private int currentAmmo;
-    private bool isReloading = false;
 
     void Start()
     {
         _inputs = GetComponentInParent<Inputs>();
-        currentAmmo = magazineSize;
     }
 
     void Update()
     {
-        Debug.Log(currentAmmo);
-        Debug.Log(magazineSize);
         // Timer pour burst
         if (isBursting)
         {
             burstTimer -= Time.deltaTime;
             if (burstTimer <= 0f && burstRemaining > 0)
             {
-                if (currentAmmo > 0)
-                {
-                    FireSingleBullet(GetMouseDirectionX());
-                    currentAmmo--;
-                    burstRemaining--;
-                    burstTimer = burstDelay;
-                }
-                else
-                {
-                    Debug.Log("Plus de munitions !");
-                    if (!isReloading)
-                        StartReload();
+                FireSingleBullet(GetMouseDirectionX());
 
-                    isBursting = false;
-                }
+                burstRemaining--;
+                burstTimer = burstDelay;
             }
             if (burstRemaining == 0)
                 isBursting = false;
         }
 
         // Input pour tirer
-        if (currentWeapon == "Pistol" && _inputs._shootLeft && !isReloading)
+        if (currentWeapon == "Pistol" && _inputs._shootLeft)
         {
-            if (currentAmmo > 0)
-            {
-                FireSingleBullet(GetMouseDirectionX());
-                currentAmmo--;
-            }
-            else
-            {
-                Debug.Log("Plus de munitions !");
-                StartReload();
-            }
+            FireSingleBullet(GetMouseDirectionX());
+
             _inputs._shootLeft = false;
-        } 
-        if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
+        }
+        else if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
         {
             StartBurst();
             _inputs._shootRight = false;
-        }
-        // Gestion reload timer
-        if (isReloading)
-        {
-            reloadTimer -= Time.deltaTime;
-
-            if (reloadTimer <= 0f)
-            {
-                int bulletsNeeded = magazineSize - currentAmmo;
-                int bulletsToLoad = Mathf.Min(bulletsNeeded, magazineCapacity);
-
-                currentAmmo += bulletsToLoad;
-                magazineCapacity -= bulletsToLoad;
-
-                isReloading = false;
-
-                Debug.Log("Reload terminé");
-            }
-
-            return; // empêche de tirer pendant reload
         }
     }
 
@@ -152,46 +101,4 @@ public class Fire : MonoBehaviour
         if (rb != null)
             rb.AddForce(direction * bulletSpeed);
     }
-
-    public void StartReload()
-    {
-        if (isReloading) return;
-        if (magazineCapacity <= 0) return;
-        if (currentAmmo == magazineSize) return;
-
-        isReloading = true;
-        reloadTimer = reloadTime;
-        
-        currentAmmo = magazineSize;
-        magazineCapacity = magazineCapacity - magazineSize;
-
-    }
-    public void ShootAt(Vector3 targetPosition)
-    {
-        Vector3 direction = (targetPosition - barrel.position).normalized;
-        direction.y = 0;
-
-        FireSingleBullet(direction);
-    }
-    public void ShootShotgunAt(Vector3 targetPosition)
-    {
-        Vector3 direction = (targetPosition - barrel.position).normalized;
-        direction.y = 0; // uniquement sur X
-
-        float spreadAngle = 15f; // angle entre les balles
-        for (int i = -1; i <= 1; i++)
-        {
-            Quaternion spreadRotation = Quaternion.Euler(0, i * spreadAngle, 0) * Quaternion.LookRotation(direction);
-            GameObject bullet = Instantiate(bulletPrefab, barrel.position, spreadRotation);
-
-            Bullet bulletScript = bullet.GetComponent<Bullet>();
-            if (bulletScript != null)
-                bulletScript.SetOwner(transform.root.gameObject);
-
-            Rigidbody rb = bullet.GetComponent<Rigidbody>();
-            if (rb != null)
-                rb.AddForce(spreadRotation * Vector3.forward * bulletSpeed);
-        }
-    }
-
 }
