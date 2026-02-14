@@ -9,12 +9,12 @@ public class GroundDetector : MonoBehaviour
 
     public bool touched;  
     public bool  stairTouched;
-
-    private Collider selfCollider;                        // pour s'auto-ignorer
+    private CharacterController controller;
+  
 
     void Start()
     {
-        selfCollider = GetComponentInParent<Collider>();
+        controller = GetComponentInParent<CharacterController>();
     }
 
     void Update()
@@ -22,25 +22,25 @@ public class GroundDetector : MonoBehaviour
         
         Vector3 start = transform.position;
 
-        
-        touched = Physics.SphereCast(start, radius, Vector3.down, out RaycastHit hitGround, distance, groundLayer, QueryTriggerInteraction.Ignore);
-        stairTouched = Physics.SphereCast(start, radius, Vector3.down, out RaycastHit hitStair, distance, stairLayer, QueryTriggerInteraction.Ignore);
+        touched = controller.isGrounded;
+        stairTouched = Physics.SphereCast(
+            start, 
+            radius, 
+            Vector3.down, 
+            out RaycastHit hit, 
+            distance, 
+            stairLayer, 
+            QueryTriggerInteraction.Ignore);
          
-
-        if (touched && hitGround.collider == selfCollider)
+        if (stairTouched)
         {
-          touched = false;  
-        }
-
-        if (stairTouched && hitStair.collider == selfCollider)
-        {
-            stairTouched = false;
+            Debug.Log("Touché : " + hit.collider.name);
         }
             
 
-        Debug.Log(stairTouched);
+        
     }
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = stairTouched ? Color.green : Color.red;

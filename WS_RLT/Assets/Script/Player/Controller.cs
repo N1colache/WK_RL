@@ -29,6 +29,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private CharacterController controller;
     [SerializeField] private GroundDetector _groundDetector;
     [SerializeField] private LayerMask stairLayer; 
+    [SerializeField] private LayerMask playerLayer; 
     private Collider currentStair;
 
 
@@ -87,11 +88,11 @@ public class Controller : MonoBehaviour
             currentStair = null;
         }
 
-        // Traverser l’escalier vers le bas si touche S
-        if (currentStair != null && Input.GetKey(KeyCode.C))
+        
+        if (currentStair != null && Input.GetKeyDown(KeyCode.C))
         {
-            Physics.IgnoreCollision(controller, currentStair, true);
-            StartCoroutine(ReenableStairCollision(currentStair, 0.5f));
+            currentStair.enabled = false;
+            Physics.IgnoreLayerCollision(playerLayer, stairLayer, true);
         }
  
     

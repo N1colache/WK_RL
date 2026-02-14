@@ -227,7 +227,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1363856602023988338, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.119
+      value: 0.359
       objectReference: {fileID: 0}
     - target: {fileID: 4932156436074143325, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
       propertyPath: m_Name
@@ -362,6 +362,9 @@ MonoBehaviour:
   dashCooldown: 1
   controller: {fileID: 6865463829311885575}
   _groundDetector: {fileID: 621672007125464663}
+  stairLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &207359021538828211
 MonoBehaviour:
   m_ObjectHideFlags: 0
