@@ -1,24 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHP : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
-    [SerializeField] private Slider healthBarSlider;
-    private Health health;
+    private Slider slider;
+    private Health playerHealth;
 
     void Awake()
     {
-        health = GetComponent<Health>();
-    }
-
-    void Start()
-    {
-        healthBarSlider.maxValue = health.GetCurrentHealth();
-        healthBarSlider.value = health.GetCurrentHealth();
+        slider = GetComponent<Slider>();
     }
 
     void Update()
     {
-        healthBarSlider.value = health.GetCurrentHealth();
+        if (slider == null)
+            return;
+
+        if (playerHealth == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                playerHealth = player.GetComponent<Health>();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (playerHealth != null)
+        {
+            slider.maxValue = playerHealth.maxHealth;
+            slider.value = playerHealth.currentHealth;
+        }
     }
 }

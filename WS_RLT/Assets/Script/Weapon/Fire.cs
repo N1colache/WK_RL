@@ -64,7 +64,7 @@ public class Fire : MonoBehaviour
 
                 isReloading = false;
 
-                Debug.Log("Reload terminé");
+                //Debug.Log("Reload terminé");
             }
 
             return; // empêche de tirer pendant reload

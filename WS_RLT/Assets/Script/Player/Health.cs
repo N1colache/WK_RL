@@ -2,51 +2,34 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 10;
-    private int currentHealth;
+    public int maxHealth = 100;
+    public int currentHealth;
 
-    public bool IsDead { get; private set; }
+    public System.Action<int, int> OnHealthChanged;
 
-    void Awake()
+    void Start()
     {
         currentHealth = maxHealth;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     public void TakeDamage(int amount)
     {
-        if (IsDead) return;
-
         currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log(gameObject.name + " prend " + amount + " dégâts");
+        if (currentHealth < 0)
+            currentHealth = 0;
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        if (IsDead) return;
-
-        IsDead = true;
-        Debug.Log(gameObject.name + " est mort");
-
-        Destroy(gameObject);
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
     public void Heal(int amount)
     {
-        if (IsDead) return;
-
         currentHealth += amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-    }
 
-    public int GetCurrentHealth()
-    {
-        return currentHealth;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

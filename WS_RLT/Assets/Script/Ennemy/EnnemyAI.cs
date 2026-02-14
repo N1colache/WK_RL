@@ -34,8 +34,8 @@ public class EnnemyAI : MonoBehaviour
 
         // Cherche le Fire sur l’arme (enfant)
         fire = GetComponentInChildren<Fire>();
-        if (fire == null)
-            Debug.LogError("Le composant Fire n'a pas été trouvé sur l'arme !");
+        if (fire == null) ;
+        //Debug.LogError("Le composant Fire n'a pas été trouvé sur l'arme !");
     }
 
     private void Update()

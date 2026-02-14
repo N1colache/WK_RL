@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Controller : MonoBehaviour
@@ -10,8 +11,8 @@ public class Controller : MonoBehaviour
     [Header("Saut")]
     [SerializeField] private float jumpHeight = 2f;
     [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float coyoteTime = 0.2f; // temps après avoir quitté le sol pour encore sauter
-    private float coyoteTimer;
+    [SerializeField] private float jumpTime = 0.2f; // temps après avoir quitté le sol pour encore sauter
+    private float jumpTimer;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 10f;
@@ -27,6 +28,9 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private LayerMask stairLayer; 
+    private Collider currentStair;
+
 
     void Start()
     {
@@ -37,10 +41,7 @@ public class Controller : MonoBehaviour
     void Update()
     {
         if (controller == null || _inputs == null) return;
-
-        // -----------------------------
-        // Dash
-        // -----------------------------
+        
         if (_inputs._dashing && !isDashing && cooldownTimer <= 0f && _groundDetector.touched)
         {
             StartDash();
@@ -54,27 +55,53 @@ public class Controller : MonoBehaviour
             {
                 isDashing = false;
             }
-
-            // Ignore le reste du mouvement pendant le dash
             return;
         }
 
         if (cooldownTimer > 0f)
+        {
             cooldownTimer -= Time.deltaTime;
+        }
 
-        
-        // Coyote time pour jump
-        
+
+
         if (_groundDetector.touched)
-            coyoteTimer = coyoteTime;
+        {
+            jumpTimer = jumpTime;
+        }
         else
-            coyoteTimer -= Time.deltaTime;
+        {
+            jumpTimer -= Time.deltaTime;
+        }
+
+        if (_groundDetector.stairTouched)
+        {
+            RaycastHit hit;
+            if (Physics.SphereCast(transform.position, _groundDetector.radius, Vector3.down, out hit, _groundDetector.distance, stairLayer))
+            {
+                currentStair = hit.collider;
+            }
+        }
+        else
+        {
+            currentStair = null;
+        }
+
+        // Traverser l’escalier vers le bas si touche S
+        if (currentStair != null && Input.GetKey(KeyCode.C))
+        {
+            Physics.IgnoreCollision(controller, currentStair, true);
+            StartCoroutine(ReenableStairCollision(currentStair, 0.5f));
+        }
+ 
+    
+            Debug.Log(currentStair);
 
         
         // Movement
         
         Vector2 input = _inputs.Move;
-        Vector3 move = new Vector3(input.x, 0, 0); // 2.5D : horizontal seulement
+        Vector3 move = new Vector3(input.x, 0, 0); 
         controller.Move(move * moveSpeed * Time.deltaTime);
 
         // Rotation vers la direction du mouvement
@@ -84,10 +111,10 @@ public class Controller : MonoBehaviour
         
         // Jump
         
-        if (_inputs.Jump && coyoteTimer > 0f)
+        if (_inputs.Jump && jumpTimer > 0f)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            coyoteTimer = 0f; // empêcher double jump
+            jumpTimer = 0f; // empêcher double jump
         }
 
         
@@ -112,6 +139,12 @@ public class Controller : MonoBehaviour
             dashDirection = new Vector3(input.x, 0, input.y).normalized;
         else
             dashDirection = transform.forward;
+    }
+    private IEnumerator ReenableStairCollision(Collider stair, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (stair != null)
+            Physics.IgnoreCollision(controller, stair, false);
     }
 
     

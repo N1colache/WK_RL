@@ -1,26 +1,50 @@
-using System;
 using UnityEngine;
 
-// ReSharper disable once InconsistentNaming
 public class GroundDetector : MonoBehaviour
 {
-    [SerializeField] private float distance = 0.5f;
-    
-    public bool touched;
-    
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] public float distance = 0.5f;       
+    [SerializeField] public float radius = 0.2f;         
+    [SerializeField] private LayerMask groundLayer;  
+    [SerializeField] private LayerMask stairLayer;
+
+    public bool touched;  
+    public bool  stairTouched;
+
+    private Collider selfCollider;                        // pour s'auto-ignorer
+
+    void Start()
+    {
+        selfCollider = GetComponentInParent<Collider>();
+    }
 
     void Update()
     {
-        touched = Physics.Raycast(transform.position, Vector3.down, distance, groundLayer);
-        Debug.Log(touched);
+        
+        Vector3 start = transform.position;
+
+        
+        touched = Physics.SphereCast(start, radius, Vector3.down, out RaycastHit hitGround, distance, groundLayer, QueryTriggerInteraction.Ignore);
+        stairTouched = Physics.SphereCast(start, radius, Vector3.down, out RaycastHit hitStair, distance, stairLayer, QueryTriggerInteraction.Ignore);
+         
+
+        if (touched && hitGround.collider == selfCollider)
+        {
+          touched = false;  
+        }
+
+        if (stairTouched && hitStair.collider == selfCollider)
+        {
+            stairTouched = false;
+        }
+            
+
+        Debug.Log(stairTouched);
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = touched ? Color.green : Color.red;
+        Gizmos.color = stairTouched ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * distance);
-        Gizmos.DrawSphere(transform.position + Vector3.down * distance, 0.05f);
-        
+        Gizmos.DrawSphere(transform.position + Vector3.down * distance, radius);
     }
 }
