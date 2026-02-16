@@ -38,6 +38,7 @@ public class Controller : MonoBehaviour
     private GameObject OldStairUpObject;
     [SerializeField] private Collider stair;
     public bool disableStair;
+    public bool disableStairUp;
 
     void Start()
     {
@@ -197,10 +198,10 @@ public class Controller : MonoBehaviour
     }
     private void DisableStairUpCollision()
     {
-        if (currentStairUpObject != null && !disableStair)
+        if (currentStairUpObject != null && !disableStairUp)
         {
              
-            disableStair = true;
+            disableStairUp = true;
             OldStairObject = currentStairUpObject;
             currentStairUpObject.SetActive(false); 
              
@@ -218,7 +219,7 @@ public class Controller : MonoBehaviour
             OldStairUpObject.SetActive(true);
         }
 
-        disableStair = false;
+        disableStairUp = false;
         OldStairUpObject = null;
     }
 

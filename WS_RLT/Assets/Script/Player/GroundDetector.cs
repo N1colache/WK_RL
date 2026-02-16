@@ -23,6 +23,7 @@ public class GroundDetector : MonoBehaviour
     void Start()
     {
         controller = GetComponentInParent<CharacterController>();
+        ControllerRef = GetComponentInParent<Controller>();
     }
 
     void Update()

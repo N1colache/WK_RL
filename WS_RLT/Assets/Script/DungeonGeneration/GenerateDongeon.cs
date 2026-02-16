@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GridDungeon : MonoBehaviour
@@ -47,6 +49,8 @@ public class GridDungeon : MonoBehaviour
     private Vector2Int startPos = new Vector2Int(0, 0);
     private Vector2Int bossPos;
     private Vector2Int sidePos;
+    
+    [SerializeField] private string spawnTag;
 
     private void Start()
     {
@@ -68,6 +72,11 @@ public class GridDungeon : MonoBehaviour
         foreach (Transform child in _generationContainer.transform)
         {
             Destroy(child.gameObject);
+        }
+        if (currentPlayer != null)
+        {
+            Destroy(currentPlayer);
+            currentPlayer = null;
         }
         
         List<Room> Rightroom = new List<Room>();
@@ -139,26 +148,8 @@ public class GridDungeon : MonoBehaviour
          ConnectTeleporters();
        
          Room startRoom = grid[startPos.x, startPos.y];
+         StartCoroutine(SpawnPlayerAfterGeneration(startRoom));
 
-         if (startRoom.InstantiatedChunk != null)
-         {
-             Transform spawnPoint = startRoom.InstantiatedChunk.transform.Find("PlayerSpawn");
-
-             Vector3 spawnPosition;
-
-             if (spawnPoint != null)
-             {
-                 spawnPosition = spawnPoint.position;
-             }
-             else
-             {
-                 spawnPosition = startRoom.WorldPosition;
-             }
-
-             // On déplace simplement le joueur existant
-             player.transform.position = spawnPosition;
-             playerCamera.SetActive(true);
-         }
 
         
 
@@ -177,6 +168,13 @@ public class GridDungeon : MonoBehaviour
             if (room.Type == RoomType.Start)
             {
                 instance = Instantiate(startRoomPrefab, room.WorldPosition, Quaternion.identity, _generationContainer.transform);
+                
+                // assigner le spawn point directement
+                room.SpawnPoint = instance.transform.Find("PlayerSpawn");
+                if (room.SpawnPoint == null)
+                    Debug.LogError("Le prefab StartRoom doit avoir un enfant PlayerSpawn !");
+                else
+                    Debug.Log("Spawn trouvé à " + room.SpawnPoint.position);
             }
             else if (room.Type == RoomType.Boss)
             {
@@ -261,6 +259,46 @@ public class GridDungeon : MonoBehaviour
                (a == Teleporter.Direction.Left && b == Teleporter.Direction.Right) ||
                (a == Teleporter.Direction.Up && b == Teleporter.Direction.Down) ||
                (a == Teleporter.Direction.Down && b == Teleporter.Direction.Up);
+    }
+
+
+    private IEnumerator SpawnPlayerAfterGeneration(Room startRoom)
+    {
+        yield return null; // attendre 1 frame pour que l'objet soit instancié
+
+        if (currentPlayer == null)
+            currentPlayer = Instantiate(player);
+
+        // Récupérer CharacterController et Camera dans l'enfant
+        CharacterController controller = currentPlayer.GetComponentInChildren<CharacterController>();
+        Camera cam = currentPlayer.GetComponentInChildren<Camera>();
+
+        if (controller == null)
+        {
+            Debug.LogError("CharacterController introuvable !");
+            yield break;
+        }
+
+        if (cam == null)
+        {
+            Debug.LogError("Camera introuvable dans l'enfant du joueur !");
+        }
+        else
+        {
+            cam.gameObject.SetActive(true);
+            playerCamera = cam.gameObject;
+        }
+
+        // Désactiver le controller avant de bouger le joueur
+        controller.enabled = false;
+
+        // Déplacer et orienter le joueur au spawn
+        currentPlayer.transform.position = startRoom.SpawnPoint.position + Vector3.up * 0.1f;
+        currentPlayer.transform.rotation = startRoom.SpawnPoint.rotation;
+
+        // Réactiver le controller
+        controller.enabled = true;
+        currentPlayer.SetActive(true);
     }
 
 

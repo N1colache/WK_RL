@@ -11,8 +11,11 @@ public class MainMenu : MonoBehaviour
 
     public LevelLoader levelLoader;
     private GameObject Script;
-    
 
+    public void Start()
+    {
+        levelLoader.currentScene = 1;
+    }
     public void PlayGame()
     {
         Debug.Log("Loaded Scene 1 Index");

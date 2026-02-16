@@ -9,6 +9,8 @@ public class LevelLoader : MonoBehaviour
     
     public Animator transition;
     public float transitionTime = 1.0f;
+    string levelToLoad;
+    public int currentScene;
     
 
     public void Transition()
@@ -22,7 +24,7 @@ public class LevelLoader : MonoBehaviour
         
         yield return new WaitForSeconds(transitionTime);
         
-        SceneManager.LoadScene("GenerateDungeonScene");
+        SceneManager.LoadScene(currentScene);
     }
     
     

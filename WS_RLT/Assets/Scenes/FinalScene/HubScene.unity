@@ -364,6 +364,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2824784215337610294, guid: 0ff0c4cb17cd3874daee166bc3dba1a5, type: 3}
+      propertyPath: stairLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824784215337610294, guid: 0ff0c4cb17cd3874daee166bc3dba1a5, type: 3}
+      propertyPath: playerLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4675211796589496898, guid: 0ff0c4cb17cd3874daee166bc3dba1a5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -29.01
@@ -772,7 +780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49250378c2459954886e3f76afc14ed5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraObject: {fileID: 0}
+  cameraObject: {fileID: 1988056222}
 --- !u!4 &1685906448
 Transform:
   m_ObjectHideFlags: 0
@@ -1004,6 +1012,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1988056222 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1797978213166873506, guid: 0ff0c4cb17cd3874daee166bc3dba1a5, type: 3}
+  m_PrefabInstance: {fileID: 695962735}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2001958498
 PrefabInstance:
   m_ObjectHideFlags: 0
