@@ -28,10 +28,16 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private GroundDetector _groundDetector;
+    [SerializeField] private GroundDetectorUp _groundDetectorUp;
     [SerializeField] private LayerMask stairLayer; 
     [SerializeField] private LayerMask playerLayer; 
     private Collider currentStair;
-
+    private GameObject currentStairObject;
+    private GameObject currentStairUpObject;
+    private GameObject OldStairObject;
+    private GameObject OldStairUpObject;
+    [SerializeField] private Collider stair;
+    public bool disableStair;
 
     void Start()
     {
@@ -77,26 +83,46 @@ public class Controller : MonoBehaviour
 
         if (_groundDetector.stairTouched)
         {
-            RaycastHit hit;
-            if (Physics.SphereCast(transform.position, _groundDetector.radius, Vector3.down, out hit, _groundDetector.distance, stairLayer))
-            {
-                currentStair = hit.collider;
-            }
+                currentStairObject = _groundDetector._collider;
+            
         }
         else
         {
-            currentStair = null;
+            currentStairObject = null;
         }
 
         
-        if (currentStair != null && Input.GetKeyDown(KeyCode.C))
+        if (currentStairObject != null && Input.GetKeyDown(KeyCode.C))
         {
-            currentStair.enabled = false;
-            Physics.IgnoreLayerCollision(playerLayer, stairLayer, true);
+            Debug.Log("Escalier désactivé");
+            currentStairObject.GetComponent<Collider>();
+            OldStairObject = currentStairObject;
+            DisableStairCollision();
+            
+            
         }
- 
+        if (_groundDetectorUp.stairUpTouched)
+        {
+            currentStairUpObject = _groundDetectorUp._colliderUp;
+            
+        }
+        else
+        {
+            currentStairUpObject = null;
+        }
+        if (currentStairUpObject != null )
+        {
+            Debug.Log("Escalier désactivé");
+            currentStairUpObject.GetComponent<Collider>();
+            OldStairUpObject = currentStairUpObject;
+            DisableStairUpCollision();
+
+
+        }
+        
+            Debug.Log(currentStairObject);
     
-            Debug.Log(currentStair);
+            
 
         
         // Movement
@@ -141,11 +167,59 @@ public class Controller : MonoBehaviour
         else
             dashDirection = transform.forward;
     }
-    private IEnumerator ReenableStairCollision(Collider stair, float delay)
+    
+
+    private void DisableStairCollision()
+    {
+        if (currentStairObject != null && !disableStair)
+        {
+             
+             disableStair = true;
+             OldStairObject = currentStairObject;
+             currentStairObject.SetActive(false); 
+             
+             StartCoroutine(ReenableStairAfterDelay(1f));
+        }
+       
+        
+    } 
+    private IEnumerator ReenableStairAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (stair != null)
-            Physics.IgnoreCollision(controller, stair, false);
+
+        if (OldStairObject != null)
+        {
+            OldStairObject.SetActive(true);
+        }
+
+        disableStair = false;
+        OldStairObject = null;
+    }
+    private void DisableStairUpCollision()
+    {
+        if (currentStairUpObject != null && !disableStair)
+        {
+             
+            disableStair = true;
+            OldStairObject = currentStairUpObject;
+            currentStairUpObject.SetActive(false); 
+             
+            StartCoroutine(ReenableStairUpAfterDelay(1f));
+        }
+       
+        
+    } 
+    private IEnumerator ReenableStairUpAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (OldStairUpObject != null)
+        {
+            OldStairUpObject.SetActive(true);
+        }
+
+        disableStair = false;
+        OldStairUpObject = null;
     }
 
     
