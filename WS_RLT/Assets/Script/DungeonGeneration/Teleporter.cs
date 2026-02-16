@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Teleporter : MonoBehaviour
@@ -10,6 +13,12 @@ public class Teleporter : MonoBehaviour
         Down
     }
     public Direction direction;
+
+    public Animator transitionAnimator;
+    
+    public LevelLoader levelLoader;
+    
+    public float transitionDuration = 1f;
     
     [SerializeField] private Vector3 destination;
 
@@ -17,6 +26,16 @@ public class Teleporter : MonoBehaviour
 
     private float timer = 0f;
     private bool isTeleporting = false;
+
+    public void  Start()
+    {
+        levelLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
+        transitionAnimator = GameObject.FindGameObjectWithTag("Transition")
+            .GetComponent<Animator>();
+    }
+    
+    
+    
 
     public void SetDestination(Vector3 dest)
     {
@@ -45,7 +64,8 @@ public class Teleporter : MonoBehaviour
 
         if (timer >= delayBeforeTeleport)
         {
-            TeleportPlayer(other);
+            StartCoroutine(TeleportWithTransition(other));
+            Debug.Log("Teleporting");
         }
     }
 
@@ -58,8 +78,17 @@ public class Teleporter : MonoBehaviour
         }
     }
 
-    private void TeleportPlayer(Collider player)
+
+    IEnumerator TeleportWithTransition(Collider player)
     {
+        Debug.Log("Transition lancée");
+        
+        isTeleporting = true;
+        
+        transitionAnimator.SetTrigger("Start");
+        
+        yield return new WaitForSeconds(transitionDuration);
+        
         isTeleporting = true;
 
         Debug.Log("TELEPORT DU JOUEUR vers " + destination);
@@ -81,14 +110,21 @@ public class Teleporter : MonoBehaviour
         }
         else
         {
+            
             player.transform.position = destination;
+
         }
+        
+        yield return new WaitForSeconds(1f);
+        transitionAnimator.SetTrigger("End");
+        
 
         // Reset pour pouvoir re-tp plus tard
         timer = 0f;
         isTeleporting = false;
     }
-
+    
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
