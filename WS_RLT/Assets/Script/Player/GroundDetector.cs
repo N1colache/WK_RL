@@ -1,26 +1,50 @@
-using System;
 using UnityEngine;
 
-// ReSharper disable once InconsistentNaming
 public class GroundDetector : MonoBehaviour
 {
-    [SerializeField] private float distance = 0.5f;
-    
-    public bool touched;
-    
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] public float distance = 0.5f;       
+    [SerializeField] public float radius = 0.2f;         
+    [SerializeField] private LayerMask groundLayer;  
+    [SerializeField] private LayerMask stairLayer;
+
+    public bool touched;  
+    public bool  stairTouched;
+    private CharacterController controller;
+  
+
+    void Start()
+    {
+        controller = GetComponentInParent<CharacterController>();
+    }
 
     void Update()
     {
-        touched = Physics.Raycast(transform.position, Vector3.down, distance, groundLayer);
-        Debug.Log(touched);
-    }
+        
+        Vector3 start = transform.position;
 
+        touched = controller.isGrounded;
+        stairTouched = Physics.SphereCast(
+            start, 
+            radius, 
+            Vector3.down, 
+            out RaycastHit hit, 
+            distance, 
+            stairLayer, 
+            QueryTriggerInteraction.Ignore);
+         
+        if (stairTouched)
+        {
+            Debug.Log("Touché : " + hit.collider.name);
+        }
+            
+
+        
+    }
+    
     private void OnDrawGizmos()
     {
-        Gizmos.color = touched ? Color.green : Color.red;
+        Gizmos.color = stairTouched ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * distance);
-        Gizmos.DrawSphere(transform.position + Vector3.down * distance, 0.05f);
-        
+        Gizmos.DrawSphere(transform.position + Vector3.down * distance, radius);
     }
 }

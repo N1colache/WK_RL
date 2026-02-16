@@ -198,136 +198,71 @@ public class GridDungeon : MonoBehaviour
 
 
     void ConnectTeleporters()
-{
-    foreach (Room room in grid)
     {
-        if (room.InstantiatedChunk == null)
-            continue;
-
-        Vector2Int pos = room.GridPosition;
-
-        Teleporter tpRight = room.InstantiatedChunk.transform.Find("TeleporterRight")?.GetComponent<Teleporter>();
-        Teleporter tpLeft  = room.InstantiatedChunk.transform.Find("TeleporterLeft")?.GetComponent<Teleporter>();
-        Teleporter tpUp    = room.InstantiatedChunk.transform.Find("TeleporterUp")?.GetComponent<Teleporter>();
-        Teleporter tpDown  = room.InstantiatedChunk.transform.Find("TeleporterDown")?.GetComponent<Teleporter>();
-
-        // ----- CONNEXION DROITE -----
-        if (pos.x + 1 < width)
+        foreach (Room room in grid)
         {
-            Room targetRoom = grid[pos.x + 1, pos.y];
+            if (room.InstantiatedChunk == null)
+                continue;
 
-            Teleporter targetTp = targetRoom.InstantiatedChunk.transform
-                .Find("TeleporterLeft")
-                ?.GetComponent<Teleporter>();
+            Vector2Int pos = room.GridPosition;
 
-            if (tpRight != null)
+            Teleporter[] teleporters = room.InstantiatedChunk.GetComponentsInChildren<Teleporter>();
+
+            foreach (Teleporter tp in teleporters)
             {
-                if (targetTp != null)
+                Vector2Int targetPos = pos;
+
+                switch (tp.direction)
                 {
-                    tpRight.SetDestination(targetTp.transform.position);
-                    tpRight.gameObject.SetActive(true);
+                    case Teleporter.Direction.Right:
+                        targetPos += Vector2Int.right;
+                        break;
+
+                    case Teleporter.Direction.Left:
+                        targetPos += Vector2Int.left;
+                        break;
+
+                    case Teleporter.Direction.Up:
+                        targetPos += Vector2Int.up;
+                        break;
+
+                    case Teleporter.Direction.Down:
+                        targetPos += Vector2Int.down;
+                        break;
+                }
+
+                if (targetPos.x >= 0 && targetPos.x < width &&
+                    targetPos.y >= 0 && targetPos.y < height)
+                {
+                    Room targetRoom = grid[targetPos.x, targetPos.y];
+
+                    Teleporter[] targetTps = targetRoom.InstantiatedChunk.GetComponentsInChildren<Teleporter>();
+
+                    foreach (Teleporter targetTp in targetTps)
+                    {
+                        if (IsOpposite(tp.direction, targetTp.direction))
+                        {
+                            tp.SetDestination(targetTp.transform.position);
+                            tp.gameObject.SetActive(true);
+                            break;
+                        }
+                    }
                 }
                 else
                 {
-                    Debug.LogWarning($"TP Right non connecté depuis room {pos}");
-                    tpRight.SetDestination(tpRight.transform.position); // sécurité anti 0,0,0
-                    tpRight.gameObject.SetActive(false);
+                    tp.gameObject.SetActive(false);
                 }
             }
-        }
-        else if (tpRight != null)
-        {
-            tpRight.gameObject.SetActive(false);
-        }
-
-        // ----- CONNEXION GAUCHE -----
-        if (pos.x - 1 >= 0)
-        {
-            Room targetRoom = grid[pos.x - 1, pos.y];
-
-            Teleporter targetTp = targetRoom.InstantiatedChunk.transform
-                .Find("TeleporterRight")
-                ?.GetComponent<Teleporter>();
-
-            if (tpLeft != null)
-            {
-                if (targetTp != null)
-                {
-                    tpLeft.SetDestination(targetTp.transform.position);
-                    tpLeft.gameObject.SetActive(true);
-                }
-                else
-                {
-                    Debug.LogWarning($"TP Right non connecté depuis room {pos}");
-                    tpLeft.SetDestination(tpLeft.transform.position); // sécurité anti 0,0,0
-                    tpLeft.gameObject.SetActive(false);
-                }
-            }
-        }
-        else if (tpLeft != null)
-        {
-            tpLeft.gameObject.SetActive(false);
-        }
-
-        // ----- CONNEXION HAUT -----
-        if (pos.y + 1 < height)
-        {
-            Room targetRoom = grid[pos.x, pos.y + 1];
-
-            Teleporter targetTp = targetRoom.InstantiatedChunk.transform
-                .Find("TeleporterDown")
-                ?.GetComponent<Teleporter>();
-
-            if (tpUp != null)
-            {
-                if (targetTp != null)
-                {
-                    tpUp.SetDestination(targetTp.transform.position);
-                    tpUp.gameObject.SetActive(true);
-                }
-                else
-                {
-                    Debug.LogWarning($"TP Right non connecté depuis room {pos}");
-                    tpUp.SetDestination(tpUp.transform.position); // sécurité anti 0,0,0
-                    tpUp.gameObject.SetActive(false);
-                }
-            }
-        }
-        else if (tpUp != null)
-        {
-            tpUp.gameObject.SetActive(false);
-        }
-
-        // ----- CONNEXION BAS -----
-        if (pos.y - 1 >= 0)
-        {
-            Room targetRoom = grid[pos.x, pos.y - 1];
-
-            Teleporter targetTp = targetRoom.InstantiatedChunk.transform
-                .Find("TeleporterUp")
-                ?.GetComponent<Teleporter>();
-
-            if (tpDown != null)
-            {
-                if (targetTp != null)
-                {
-                    tpDown.SetDestination(targetTp.transform.position);
-                    tpDown.gameObject.SetActive(true);
-                }
-                else
-                {
-                    Debug.LogWarning($"TP Right non connecté depuis room {pos}");
-                    tpDown.SetDestination(tpDown.transform.position); // sécurité anti 0,0,0
-                    tpDown.gameObject.SetActive(false);
-                }
-            }
-        }
-        else if (tpDown != null)
-        {
-            tpDown.gameObject.SetActive(false);
         }
     }
-}
+    bool IsOpposite(Teleporter.Direction a, Teleporter.Direction b)
+    {
+        return (a == Teleporter.Direction.Right && b == Teleporter.Direction.Left) ||
+               (a == Teleporter.Direction.Left && b == Teleporter.Direction.Right) ||
+               (a == Teleporter.Direction.Up && b == Teleporter.Direction.Down) ||
+               (a == Teleporter.Direction.Down && b == Teleporter.Direction.Up);
+    }
+
 
 
 

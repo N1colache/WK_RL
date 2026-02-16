@@ -1,22 +1,39 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHP : MonoBehaviour
+public class HealthBarUI : MonoBehaviour
 {
-    public Slider healthBarSlider;
-    public int maxHP = 100;
-    public int currentHP;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private Slider slider;
+    private Health playerHealth;
+
+    void Awake()
     {
-        currentHP = maxHP;
+        slider = GetComponent<Slider>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        healthBarSlider.value = currentHP;
-        healthBarSlider.maxValue = maxHP;
+        if (slider == null)
+            return;
+
+        if (playerHealth == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                playerHealth = player.GetComponent<Health>();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (playerHealth != null)
+        {
+            slider.maxValue = playerHealth.maxHealth;
+            slider.value = playerHealth.currentHealth;
+        }
     }
 }

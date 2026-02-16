@@ -5,25 +5,27 @@ public class Bullet : MonoBehaviour
     [SerializeField] private int damage = 1;
     [SerializeField] private float lifeTime = 5f;
 
+    private GameObject owner;
+    private bool hasHit = false;
+
     void Start()
     {
-        Destroy(gameObject, lifeTime); // détruit si ne touche rien
+        Destroy(gameObject, lifeTime);
     }
-    
-    private GameObject owner;
 
     public void SetOwner(GameObject shooter)
     {
         owner = shooter;
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject == owner)
-            return;
+        if (hasHit) return;
+        if (other.gameObject == owner) return;
 
-        Health health = collision.gameObject.GetComponent<Health>();
+        hasHit = true;
 
+        Health health = other.GetComponent<Health>();
         if (health != null)
         {
             health.TakeDamage(damage);

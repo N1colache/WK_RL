@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
+    public enum Direction
+    {
+        Right,
+        Left,
+        Up,
+        Down
+    }
+    public Direction direction;
+    
     [SerializeField] private Vector3 destination;
 
     [SerializeField] private float delayBeforeTeleport = 1f;

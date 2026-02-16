@@ -6,7 +6,7 @@ public class Fire : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform barrel;
     [SerializeField] private string currentWeapon = "Pistol";
-    private float bulletSpeed = 500f;
+    private float bulletSpeed = 1000f;
 
     // Burst variables
     [SerializeField] private int burstCount = 3;
@@ -36,54 +36,19 @@ public class Fire : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(currentAmmo);
-        Debug.Log(magazineSize);
-        // Timer pour burst
-        if (isBursting)
-        {
-            burstTimer -= Time.deltaTime;
-            if (burstTimer <= 0f && burstRemaining > 0)
+        
+        
+            // Si _inputs est null, c’est probablement un ennemi → ne pas exécuter la partie joueur
+            if (_inputs != null)
             {
-                if (currentAmmo > 0)
-                {
-                    FireSingleBullet(GetMouseDirectionX());
-                    currentAmmo--;
-                    burstRemaining--;
-                    burstTimer = burstDelay;
-                }
-                else
-                {
-                    Debug.Log("Plus de munitions !");
-                    if (!isReloading)
-                        StartReload();
+                HandlePlayerInput();
+            }
 
-                    isBursting = false;
-                }
-            }
-            if (burstRemaining == 0)
-                isBursting = false;
-        }
+            HandleBurstTimer();
+            HandleReloadTimer();
+        
 
-        // Input pour tirer
-        if (currentWeapon == "Pistol" && _inputs._shootLeft && !isReloading)
-        {
-            if (currentAmmo > 0)
-            {
-                FireSingleBullet(GetMouseDirectionX());
-                currentAmmo--;
-            }
-            else
-            {
-                Debug.Log("Plus de munitions !");
-                StartReload();
-            }
-            _inputs._shootLeft = false;
-        } 
-        if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
-        {
-            StartBurst();
-            _inputs._shootRight = false;
-        }
+
         // Gestion reload timer
         if (isReloading)
         {
@@ -99,7 +64,7 @@ public class Fire : MonoBehaviour
 
                 isReloading = false;
 
-                Debug.Log("Reload terminé");
+                //Debug.Log("Reload terminé");
             }
 
             return; // empêche de tirer pendant reload
@@ -181,16 +146,17 @@ public class Fire : MonoBehaviour
     {
         if (currentAmmo <= 0) return;
 
-        float directionY = Mathf.Sign(targetPosition.y - barrel.position.y);
+        // Direction principale sur X uniquement
+        float directionX = Mathf.Sign(targetPosition.x - barrel.position.x);
 
         for (int i = 0; i < pelletCount; i++)
         {
-            // Spread aléatoire autour de la direction principale
-            float randomSpread = Random.Range(-spreadAmount, spreadAmount);
+            // Spread vertical (axe Y uniquement)
+            float randomSpreadY = Random.Range(-spreadAmount, spreadAmount);
 
             Vector3 direction = new Vector3(
-                0,
-                directionY + randomSpread,
+                directionX,
+                randomSpreadY,
                 0
             ).normalized;
 
@@ -207,6 +173,109 @@ public class Fire : MonoBehaviour
 
         currentAmmo--;
     }
+
+    Vector3 GetShotgunTargetPosition()
+    {
+        if (Camera.main == null)
+            return barrel.position + Vector3.up;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(Vector3.right, barrel.position); 
+
+        if (plane.Raycast(ray, out float enter))
+        {
+            return ray.GetPoint(enter);
+        }
+
+        return barrel.position + Vector3.up;
+    }
+    void HandlePlayerInput()
+    {
+        // Pistol
+        if (currentWeapon == "Pistol" && _inputs._shootLeft && !isReloading)
+        {
+            if (currentAmmo > 0)
+            {
+                FireSingleBullet(GetMouseDirectionX());
+                currentAmmo--;
+            }
+            else
+            {
+                Debug.Log("Plus de munitions !");
+                StartReload();
+            }
+            _inputs._shootLeft = false;
+        }
+
+        // Burst
+        if (currentWeapon == "Burst" && _inputs._shootRight && !isBursting)
+        {
+            StartBurst();
+            _inputs._shootRight = false;
+        }
+
+        // Shotgun
+        if (currentWeapon == "Shotgun" && _inputs._shootLeft && !isReloading)
+        {
+            if (currentAmmo > 0)
+            {
+                ShootShotgunAt(GetShotgunTargetPosition());
+            }
+            else
+            {
+                Debug.Log("Plus de munitions !");
+                StartReload();
+            }
+            _inputs._shootLeft = false;
+        }
+    }
+    void HandleBurstTimer()
+    {
+        if (!isBursting) return;
+
+        burstTimer -= Time.deltaTime;
+        if (burstTimer <= 0f && burstRemaining > 0)
+        {
+            if (currentAmmo > 0)
+            {
+                FireSingleBullet(GetMouseDirectionX());
+                currentAmmo--;
+                burstRemaining--;
+                burstTimer = burstDelay;
+            }
+            else
+            {
+                Debug.Log("Plus de munitions !");
+                if (!isReloading)
+                    StartReload();
+
+                isBursting = false;
+            }
+        }
+        if (burstRemaining == 0)
+            isBursting = false;
+    }
+
+    void HandleReloadTimer()
+    {
+        if (!isReloading) return;
+
+        reloadTimer -= Time.deltaTime;
+        if (reloadTimer <= 0f)
+        {
+            int bulletsNeeded = magazineSize - currentAmmo;
+            int bulletsToLoad = Mathf.Min(bulletsNeeded, magazineCapacity);
+
+            currentAmmo += bulletsToLoad;
+            magazineCapacity -= bulletsToLoad;
+
+            isReloading = false;
+            Debug.Log("Reload terminé");
+        }
+    }
+
+
+
 
 
 }
