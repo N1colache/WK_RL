@@ -275,7 +275,9 @@ public class Fire : MonoBehaviour
     }
 
 
-
-
-
+    public void AddAmmo(int amount)
+    {
+        currentAmmo += amount;
+    }
+    
 }
