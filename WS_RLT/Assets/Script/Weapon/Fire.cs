@@ -6,7 +6,7 @@ public class Fire : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform barrel;
     [SerializeField] private string currentWeapon = "Pistol";
-    private float bulletSpeed = 1000f;
+    [SerializeField] private float bulletSpeed = 1000f;
 
     // Burst variables
     [SerializeField] private int burstCount = 3;
@@ -119,7 +119,7 @@ public class Fire : MonoBehaviour
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
-            rb.AddForce(direction * bulletSpeed);
+            rb.AddForce(direction * bulletSpeed, ForceMode.Impulse);
     }
 
     public void StartReload()

@@ -31,6 +31,7 @@ public class Bullet : MonoBehaviour
             health.TakeDamage(damage);
         }
 
+        Debug.Log("Who kils me ? " + other.gameObject.name);
         Destroy(gameObject);
     }
 

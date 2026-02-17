@@ -10,6 +10,8 @@ public class Inputs : MonoBehaviour
 
     public Vector2 Move;
     public bool Jump;
+    public bool crounch;
+    public bool grenade;
     public float horizontal;
     
     public bool _dashing;
@@ -54,6 +56,23 @@ public class Inputs : MonoBehaviour
         if (value.isPressed) 
             _shootRight = true;
         Debug.Log("Shoot");
+    }
+
+    public void OnCrounch(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            crounch = true;
+        }
+        
+    }
+
+    public void OnGrenade(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            grenade = true;
+        }
     }
    
     
