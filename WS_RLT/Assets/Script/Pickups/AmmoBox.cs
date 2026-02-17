@@ -6,7 +6,7 @@ public class AmmoBox : MonoBehaviour
     private Collider _collider;
     private GameObject _player;
     private Fire _ammo;
-    public int _ammoToGive;
+    [SerializeField] private int ammoToGive;
 
 
     public void Start()
@@ -21,7 +21,7 @@ public class AmmoBox : MonoBehaviour
         if (other.tag == "Player")
         {
             _ammo = _player.GetComponent<Fire>();
-            _ammo.AddAmmo(_ammoToGive);
+            _ammo.AddAmmo(ammoToGive);
             
             Destroy(this.gameObject);
         }
