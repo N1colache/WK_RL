@@ -46,7 +46,7 @@ public class Shop : MonoBehaviour
         if (moneyStore >= 5)
         {
             moneyStore -= 5;
-            //ammoTot = ammoTot + newAmmo
+            Instantiate(ammo, transform.position, Quaternion.identity);
         }
     }
 
@@ -55,7 +55,7 @@ public class Shop : MonoBehaviour
         if (moneyStore >= 10)
         {
             moneyStore -= 10;
-            //bloodInv = bloodInv + newBlood
+            Instantiate(blood, transform.position, Quaternion.identity);
         }
     }
 
