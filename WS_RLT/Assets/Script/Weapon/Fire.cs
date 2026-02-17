@@ -3,6 +3,7 @@ using UnityEngine;
 public class Fire : MonoBehaviour
 {
     public Inputs _inputs;
+    private PlayerAnimator animator;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform barrel;
     [SerializeField] private string currentWeapon = "Pistol";
@@ -32,6 +33,7 @@ public class Fire : MonoBehaviour
     {
         _inputs = GetComponentInParent<Inputs>();
         currentAmmo = magazineSize;
+        
     }
 
     void Update()
@@ -119,7 +121,7 @@ public class Fire : MonoBehaviour
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
-            rb.AddForce(direction * bulletSpeed);
+            rb.AddForce(direction * bulletSpeed, ForceMode.Impulse);
     }
 
     public void StartReload()
@@ -228,6 +230,8 @@ public class Fire : MonoBehaviour
             }
             _inputs._shootLeft = false;
         }
+       
+        
     }
     void HandleBurstTimer()
     {

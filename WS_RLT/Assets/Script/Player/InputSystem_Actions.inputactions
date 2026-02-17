@@ -106,6 +106,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Crounch",
+                    "type": "Button",
+                    "id": "e17ea610-a174-4160-ab77-43e3c3491cc9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Grenade",
+                    "type": "Button",
+                    "id": "a6c05aec-c52a-4a5a-9459-9b90b2bced65",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ShootRight",
                     "type": "Button",
                     "id": "d051c6c7-91c4-4d36-9f7b-65b9abbff066",
@@ -529,6 +547,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ShootLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d228efe-89ef-4490-9ea8-72e53692fd57",
+                    "path": "<Keyboard>/c",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crounch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97e51176-a200-45f5-888b-59d139207277",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grenade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
