@@ -27,6 +27,13 @@ public class EnnemyAI : MonoBehaviour
     public float attackRange = 5f;
     private bool playerInSightRange, playerInAttackRange;
 
+    // Animation
+    private Animator animator;
+    public bool idle;
+    public bool walk;
+    public bool run;
+    public bool attack;
+    
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -36,12 +43,18 @@ public class EnnemyAI : MonoBehaviour
         fire = GetComponentInChildren<Fire>();
         if (fire == null) ;
         //Debug.LogError("Le composant Fire n'a pas été trouvé sur l'arme !");
+        
+        animator = GetComponent<Animator>();
     }
-
+    
     private void Update()
     {
-        if (player == null) return;
+        if (player == null)
+        {
+            return;
+        }
 
+        
         // Vérifie les distances
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatsIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatsIsPlayer);
@@ -49,21 +62,60 @@ public class EnnemyAI : MonoBehaviour
         if (!playerInSightRange && !playerInAttackRange) Patrol();
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInSightRange && playerInAttackRange) AttackPlayer();
+
+
+        //Animation tests
+        if (idle == true)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
+            animator.SetBool("Attack", false);
+        }
+        if (walk == true)
+        {
+            animator.SetBool("Patrol", true);
+            animator.SetBool("Chase", false);
+            animator.SetBool("Attack", false);
+        }
+        if (run == true)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", true);
+            animator.SetBool("Attack", false);
+        }
+        if (attack == true)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
+            animator.SetBool("Attack", true);
+        }
+
+        if (agent.velocity.magnitude > 0.1f)
+        {
+            animator.SetBool("Patrol", true);
+        }
+        else
+        {
+            animator.SetBool("Patrol", false);
+        }
     }
 
     private void Patrol()
     {
         if (!walkPointSet) SearchWalkPoint();
-
+        //animator.SetBool("Patrol", true);
         if (walkPointSet)
         {
             // Ne bouge que sur X
             Vector3 destination = new Vector3(walkPoint.x, transform.position.y, transform.position.z);
             agent.SetDestination(destination);
+            
         }
 
         if (Vector3.Distance(transform.position, walkPoint) < 1f)
+        {
             walkPointSet = false;
+        }
     }
 
     private void SearchWalkPoint()
@@ -73,11 +125,15 @@ public class EnnemyAI : MonoBehaviour
 
         // Vérifie qu’il y a du sol
         if (Physics.Raycast(walkPoint + Vector3.up * 2f, Vector3.down, 4f, whatsIsGround))
+        {
             walkPointSet = true;
+        }
     }
 
     private void ChasePlayer()
     {
+        animator.SetBool("Patrol", false);
+        animator.SetBool("Chase", true);
         // Ne suit que sur X
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, transform.position.z);
         agent.SetDestination(targetPos);
@@ -85,6 +141,7 @@ public class EnnemyAI : MonoBehaviour
 
     private void AttackPlayer()
     {
+        animator.SetBool("Attack", true);
         agent.ResetPath(); // Stop mouvement
 
         Vector3 lookPos = new Vector3(player.position.x, transform.position.y, transform.position.z);
@@ -106,6 +163,7 @@ public class EnnemyAI : MonoBehaviour
             }
 
             alreadyAttacked = true;
+            animator.SetBool("Attack", false);
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
     }
