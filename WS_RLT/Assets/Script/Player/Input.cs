@@ -79,19 +79,12 @@ public class Inputs : MonoBehaviour
     public void OnHeal(InputValue value)
     {
         HealthBarUI healthBarUI = FindObjectOfType<HealthBarUI>();
-        if (value.isPressed && healthBarUI.playerHealth.currentHealth < 100)
+        Health playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+        
+        if (value.isPressed && playerHealth.currentHealth < 100)
         {
-            if (healthBarUI.playerHealth.currentHealth <= 90)
-            {
-                healthBarUI.playerHealth.currentHealth += 10;
-            }
-            else
-            {
-                healthBarUI.playerHealth.currentHealth = 100;
-            }
+            playerHealth.Heal(50);
             Debug.Log("Heal");
         }
     }
-    
-    
 }
