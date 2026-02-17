@@ -10,6 +10,8 @@ public class Inputs : MonoBehaviour
 
     public Vector2 Move;
     public bool Jump;
+    public bool crounch;
+    public bool grenade;
     public float horizontal;
     
     public bool _dashing;
@@ -55,7 +57,41 @@ public class Inputs : MonoBehaviour
             _shootRight = true;
         Debug.Log("Shoot");
     }
+
+    public void OnCrounch(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            crounch = true;
+        }
+        
+    }
+
+    public void OnGrenade(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            grenade = true;
+        }
+    }
    
+
+    public void OnHeal(InputValue value)
+    {
+        HealthBarUI healthBarUI = FindObjectOfType<HealthBarUI>();
+        if (value.isPressed && healthBarUI.playerHealth.currentHealth < 100)
+        {
+            if (healthBarUI.playerHealth.currentHealth <= 90)
+            {
+                healthBarUI.playerHealth.currentHealth += 10;
+            }
+            else
+            {
+                healthBarUI.playerHealth.currentHealth = 100;
+            }
+            Debug.Log("Heal");
+        }
+    }
     
     
 }
