@@ -33,6 +33,7 @@ public class EnnemyAI : MonoBehaviour
     public bool walk;
     public bool run;
     public bool attack;
+    public bool _throw;
     
     private void Awake()
     {
@@ -90,13 +91,29 @@ public class EnnemyAI : MonoBehaviour
             animator.SetBool("Attack", true);
         }
 
+        if (_throw == true)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
+            animator.SetBool("Attack", false);
+            animator.SetBool("Throw", true);
+        }
+
         if (agent.velocity.magnitude > 0.1f)
         {
-            animator.SetBool("Patrol", true);
+            if (playerInSightRange)
+            {
+                animator.SetBool("Chase", true);
+            }
+            else
+            {
+                animator.SetBool("Patrol", true);
+            }
         }
         else
         {
             animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
         }
     }
 
@@ -132,8 +149,6 @@ public class EnnemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
-        animator.SetBool("Patrol", false);
-        animator.SetBool("Chase", true);
         // Ne suit que sur X
         Vector3 targetPos = new Vector3(player.position.x, transform.position.y, transform.position.z);
         agent.SetDestination(targetPos);
