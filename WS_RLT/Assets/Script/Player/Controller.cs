@@ -179,8 +179,19 @@ public class Controller : MonoBehaviour
         
         animator.SetWalkingSpeed(speed);
         animator.IsJumping(!_groundDetector.touched);
-        //animator.SetWalkingSpeed(0f); // force l'idle
-        //animator.IsJumping(false);
+        if (_inputs != null)
+        {
+            if (_inputs._shootLeft)
+            {
+                 animator.AttackLeft();
+            }
+            else
+            {
+                animator.StopAttacking();
+            }
+               
+        }
+        
     }
 
     void StartDash()

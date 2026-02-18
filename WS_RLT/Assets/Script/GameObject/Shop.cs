@@ -6,11 +6,12 @@ public class Shop : MonoBehaviour
    private OpenShop openShop;
     public float moneyStore;
 
-    public GameObject blood;
-    public GameObject ammo;
+    [SerializeField] private GameObject blood;
+    [SerializeField] private GameObject ammo;
     private Controller controller;
     private PlayerCurrency playerCurrency;
     private Transform playerTransform;
+    private WeaponData weaponPlayer;
     
     void Awake()
     {
@@ -19,6 +20,7 @@ public class Shop : MonoBehaviour
     void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        weaponPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponData>();
         
     }
 
@@ -35,46 +37,46 @@ public class Shop : MonoBehaviour
 
     public void UpgradeSpeed()
     {
-        if (moneyStore >= 10)
+        if (playerCurrency.currency >= 10)
         {
-            moneyStore -= 10;
+            playerCurrency.currency -= 10;
             // shootSpeed = shootSpeed + speedUpgrade
         }
     }
 
     public void UpgradeDamage()
     {
-        if (moneyStore >= 15)
+        if (playerCurrency.currency >= 15)
         {
-            moneyStore -= 15;
+            playerCurrency.currency -= 15;
             //shootDamage = shootDamage + damageUpgrade
         }
     }
 
     public void BuyAmmo()
     {
-        if (moneyStore >= 5)
+        if (playerCurrency.currency >= 5)
         {
-            moneyStore -= 5;
+            playerCurrency.currency -= 5;
             Instantiate(ammo, playerTransform.position, Quaternion.identity);
         }
     }
 
     public void BuyBlood()
     {
-        if (moneyStore >= 10)
+        if (playerCurrency.currency >= 10)
         {
-            moneyStore -= 10;
+            playerCurrency.currency -= 10;
             Instantiate(blood, playerTransform.position, Quaternion.identity);
         }
     }
 
      public void BuyRifle()
      {
-         if (moneyStore >= 50)
+         if (playerCurrency.currency >= 50)
          {
-             moneyStore -= 50;
-             //weapons =
+             playerCurrency.currency -= 50;
+             weaponPlayer.UnlockBurst();
          }
      }
 }

@@ -20,7 +20,7 @@ public class Fire : MonoBehaviour
     [SerializeField] private int magazineSize = 5;
     [SerializeField] private int magazineCapacity = 20;
     [SerializeField] private float reloadTime = 10;
-    private float reloadTimer = 0f;
+    private float reloadTimer = 0.6f ;
     
     [Header("Shotgun")]
     [SerializeField] private int pelletCount = 5;      // nombre de projectiles
@@ -28,6 +28,8 @@ public class Fire : MonoBehaviour
 
     private int currentAmmo;
     private bool isReloading = false;
+
+    private float waitForAnnim;
 
     void Start()
     {
@@ -43,7 +45,10 @@ public class Fire : MonoBehaviour
             // Si _inputs est null, c’est probablement un ennemi → ne pas exécuter la partie joueur
             if (_inputs != null)
             {
+                waitForAnnim -= Time.deltaTime;
+                if (waitForAnnim <= 0)
                 HandlePlayerInput();
+                
             }
 
             HandleBurstTimer();

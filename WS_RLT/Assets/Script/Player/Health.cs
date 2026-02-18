@@ -13,6 +13,11 @@ public class Health : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 
+    void Update()
+    {
+        NoHealth();
+    }
+
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -31,5 +36,13 @@ public class Health : MonoBehaviour
             currentHealth = maxHealth;
 
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    public void NoHealth()
+    {
+        if (currentHealth == 0)
+        {
+            Destroy(this.gameObject);
+        }
     }
 }

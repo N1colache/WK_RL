@@ -16,7 +16,7 @@ public class OpenShop : MonoBehaviour
       canvas.gameObject.SetActive(true);
       if(other.gameObject.CompareTag("Player"))
       {
-          other.transform.position = PlayerTransform.position;
+            PlayerTransform.position =other.transform.position;
       }
       else
       {
