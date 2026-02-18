@@ -634,7 +634,29 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5252326951673955337, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
       insertIndex: -1
       addedObject: {fileID: 903316164}
+    - targetCorrespondingSourceObject: {fileID: 8923008711873299072, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8936051651303063987}
   m_SourcePrefab: {fileID: 100100000, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+--- !u!1 &8936051651303063986 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8923008711873299072, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+  m_PrefabInstance: {fileID: 8936051651303063985}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8936051651303063987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8936051651303063986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a82e44086f422429bc224f7146834f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloodBagTexture: {fileID: 2800000, guid: 4f9f5f03227370944aa3c95b5cc1237b, type: 3}
+  transparentTexture: {fileID: 2800000, guid: 5068eaff730982849955b3dedcd6b2e4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

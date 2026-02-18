@@ -4,6 +4,8 @@ public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
+    
+    public bool canHeal = true;
 
     public System.Action<int, int> OnHealthChanged;
 
