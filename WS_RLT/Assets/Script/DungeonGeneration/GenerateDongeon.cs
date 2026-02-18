@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class GridDungeon : MonoBehaviour
@@ -24,7 +25,7 @@ public class GridDungeon : MonoBehaviour
         public Transform SpawnPoint;
     }
     [SerializeField] private GameObject _generationContainer;   
-    
+    public NavMeshSurface surface;
     [Header("Taille de la grille")]
     [SerializeField] private int width = 5;
     [SerializeField] private int height = 5;
@@ -56,6 +57,7 @@ public class GridDungeon : MonoBehaviour
     {
         playerCamera.SetActive(false);
         GenerateGrid();
+        surface.BuildNavMesh();
     }
 
     private void Update()
