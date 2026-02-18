@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -7,11 +8,14 @@ public class PauseMenu : MonoBehaviour
     public static bool Paused = false;
     
     public GameObject pauseMenu;
+    
+    public LevelLoader levelLoader;
 
 
     private void Start()
     {
         Resume();
+        levelLoader = GameObject.Find("LevelLoader").GetComponent<LevelLoader>();
     }
 
 
@@ -56,6 +60,7 @@ public class PauseMenu : MonoBehaviour
     public void QuitButton()
     {
         Debug.Log("Quit to menu");
+        levelLoader.Transition();
     }
 
     public void SettingsButton()
