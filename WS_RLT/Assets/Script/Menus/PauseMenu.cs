@@ -60,6 +60,8 @@ public class PauseMenu : MonoBehaviour
     public void QuitButton()
     {
         Debug.Log("Quit to menu");
+        Time.timeScale = 1f;
+        pauseMenu.SetActive(false); 
         levelLoader.Transition();
     }
 
