@@ -2,47 +2,48 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-    public float speedGrenade = 4f;
-    public bool thrown = false;
-    public Vector3 launchOffset;
+
+    [Header("Explosion Settings")]
+    [SerializeField] private float explosionDelay = 2f;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private int damage = 20;
+    [SerializeField] private LayerMask enemyLayer;
+
+    private bool hasExploded = false;
+    public GameObject parent;
     
-    
-    public void throwGrenade()
+    void Start()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+        Invoke("Explode", explosionDelay);
+    }
+
+    void Explode()
+    {
+        //if (hasExploded) return;
+        hasExploded = true;
+        
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, explosionRadius, enemyLayer);
+
+        foreach (Collider2D enemy in enemies)
         {
-            Debug.Log("key pressed");
-            if (thrown)
+            Health health = enemy.GetComponent<Health>();
+
+            if (health != null)
             {
-                var direction = transform.right + Vector3.up;
-                GetComponent<Rigidbody2D>().AddForce(direction * speedGrenade, ForceMode2D.Impulse);
+                health.TakeDamage(damage);
             }
-            transform.Translate(launchOffset);
-            Destroy(gameObject, 5f);
         }
-       
+
+        
+        //ajouter vfx ici
+        Destroy(parent);
     }
-       
     
-
-    // Update is called once per frame
-    void Update()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!thrown)
+        if (collision.gameObject.CompareTag("Ground"))
         {
-            transform.position += transform.right * speedGrenade * Time.deltaTime;
-
+            Explode();
         }
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        /*var enemy = collision.collider.GetComponent<EnemyBehaviour>();
-        if (enemy)
-        {
-            enemy.TakeDamage(10);
-        }*/
-        Destroy(gameObject);
-    }
-
 }
