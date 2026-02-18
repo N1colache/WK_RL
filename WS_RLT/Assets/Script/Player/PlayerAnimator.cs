@@ -29,6 +29,11 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool("IsJumping", isJumping);
     }
 
+    public void SetJumpingSpeed(float speedJump)
+    {
+        _animator.SetFloat("SpeedJump", speedJump);
+    }
+
     
     public void AttackLeft()
     {

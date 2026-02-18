@@ -164,6 +164,7 @@ public class Controller : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumpTimer = 0f; // empêcher double jump
+            
            
         }
 
@@ -176,9 +177,11 @@ public class Controller : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         float speed = Mathf.Abs(_inputs.Move.x);
+        float speedAir = Mathf.Abs(_inputs.Move.y);
         
         animator.SetWalkingSpeed(speed);
         animator.IsJumping(!_groundDetector.touched);
+        
         if (_inputs != null)
         {
             if (_inputs._shootLeft)
@@ -189,6 +192,9 @@ public class Controller : MonoBehaviour
             {
                 animator.StopAttacking();
             }
+
+           
+            
                
         }
         
