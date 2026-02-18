@@ -31,6 +31,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GroundDetectorUp _groundDetectorUp;
     [SerializeField] private LayerMask stairLayer; 
     [SerializeField] private LayerMask playerLayer; 
+    
     private Collider currentStair;
     private GameObject currentStairObject;
     private GameObject currentStairUpObject;
@@ -39,11 +40,20 @@ public class Controller : MonoBehaviour
     [SerializeField] private Collider stair;
     public bool disableStair;
     public bool disableStairUp;
+    
+    [Header("Animation")]
+    private PlayerAnimator animator;
+    public bool idle;
+    public bool walk;
+    public bool run;
+    public bool attack;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         _inputs = GetComponent<Inputs>();
+        animator = GetComponent<PlayerAnimator>();
+        
     }
 
     void Update()
@@ -92,8 +102,10 @@ public class Controller : MonoBehaviour
             currentStairObject = null;
         }
 
+        //Debug.Log(_inputs.crounch);
+        //Debug.Log(currentStairObject);
         
-        if (currentStairObject != null && Input.GetKeyDown(KeyCode.C))
+        if (currentStairObject != null && _inputs.crounch)
         {
             Debug.Log("Escalier désactivé");
             currentStairObject.GetComponent<Collider>();
@@ -128,14 +140,23 @@ public class Controller : MonoBehaviour
         
         // Movement
         
-        Vector2 input = _inputs.Move;
-        Vector3 move = new Vector3(input.x, 0, 0); 
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        
+             Vector2 input = _inputs.Move;
+             Vector3 move = new Vector3(input.x, 0, 0); 
+             controller.Move(move * moveSpeed * Time.deltaTime) ;
+             
+             
+              // Rotation vers la direction du mouvement
+              if (move.sqrMagnitude > 0.01f)
+              {
+                  transform.rotation = Quaternion.LookRotation(move);
+              }
+                         
 
-        // Rotation vers la direction du mouvement
-        if (move.sqrMagnitude > 0.01f)
-            transform.rotation = Quaternion.LookRotation(move);
+        
+      
 
+       
         
         // Jump
         
@@ -143,6 +164,7 @@ public class Controller : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             jumpTimer = 0f; // empêcher double jump
+           
         }
 
         
@@ -152,6 +174,13 @@ public class Controller : MonoBehaviour
 
         // Appliquer la gravité
         controller.Move(velocity * Time.deltaTime);
+
+        float speed = Mathf.Abs(_inputs.Move.x);
+        
+        animator.SetWalkingSpeed(speed);
+        animator.IsJumping(!_groundDetector.touched);
+        //animator.SetWalkingSpeed(0f); // force l'idle
+        //animator.IsJumping(false);
     }
 
     void StartDash()
@@ -202,7 +231,7 @@ public class Controller : MonoBehaviour
         {
              
             disableStairUp = true;
-            OldStairObject = currentStairUpObject;
+            OldStairUpObject = currentStairUpObject;
             currentStairUpObject.SetActive(false); 
              
             StartCoroutine(ReenableStairUpAfterDelay(1f));

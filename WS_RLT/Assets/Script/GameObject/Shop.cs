@@ -3,24 +3,34 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    public TextMeshProUGUI moneyText;
+   private OpenShop openShop;
     public float moneyStore;
-    public float speedUpgrade = 3f;
-    public float damageUpgrade = 5f;
+
     public GameObject blood;
     public GameObject ammo;
     private Controller controller;
+    private PlayerCurrency playerCurrency;
+    private Transform playerTransform;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Awake()
+    {
+        openShop = GetComponentInParent<OpenShop>();
+    }
     void Start()
     {
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        moneyText.text = ("Money" + moneyStore);
+        
+         moneyStore = playerCurrency.currency;
+         if (openShop.PlayerTransform != null)
+         {
+              playerTransform = openShop.PlayerTransform;
+         }
     }
 
     public void UpgradeSpeed()
@@ -46,7 +56,7 @@ public class Shop : MonoBehaviour
         if (moneyStore >= 5)
         {
             moneyStore -= 5;
-            Instantiate(ammo, transform.position, Quaternion.identity);
+            Instantiate(ammo, playerTransform.position, Quaternion.identity);
         }
     }
 
@@ -55,16 +65,16 @@ public class Shop : MonoBehaviour
         if (moneyStore >= 10)
         {
             moneyStore -= 10;
-            Instantiate(blood, transform.position, Quaternion.identity);
+            Instantiate(blood, playerTransform.position, Quaternion.identity);
         }
     }
 
-    /* public void BuyRifle()
+     public void BuyRifle()
      {
          if (moneyStore >= 50)
          {
              moneyStore -= 50;
              //weapons =
          }
-     }*/
+     }
 }

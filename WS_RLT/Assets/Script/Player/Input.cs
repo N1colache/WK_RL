@@ -9,6 +9,7 @@ public class Inputs : MonoBehaviour
     private Controller _controller;
 
     public Vector2 Move;
+    public bool Moving;
     public bool Jump;
     public bool crounch;
     public bool grenade;
@@ -32,6 +33,7 @@ public class Inputs : MonoBehaviour
     public void OnMove(InputValue value)
     {
         Move = value.Get<Vector2>();
+       
         
         
     }
@@ -42,20 +44,20 @@ public class Inputs : MonoBehaviour
 
     public void OnDash(InputValue value)
     {
-        _dashing = value.isPressed;
+        _dashing = value.isPressed; 
     }
 
     public void OnShootLeft(InputValue value)
     {
         if (value.isPressed)
         _shootLeft = true;
-        Debug.Log("Shoot");
+       // Debug.Log("Shoot");
     }
     public void OnShootRight(InputValue value)
     {
         if (value.isPressed) 
             _shootRight = true;
-        Debug.Log("Shoot");
+        //Debug.Log("Shoot");
     }
 
     public void OnCrounch(InputValue value)
@@ -63,6 +65,7 @@ public class Inputs : MonoBehaviour
         if (value.isPressed)
         {
             crounch = true;
+            //Debug.Log("Crounch");
         }
         
     }
@@ -84,7 +87,7 @@ public class Inputs : MonoBehaviour
         if (value.isPressed && playerHealth.currentHealth < 100)
         {
             playerHealth.Heal(50);
-            Debug.Log("Heal");
+            //Debug.Log("Heal");
         }
     }
 }
