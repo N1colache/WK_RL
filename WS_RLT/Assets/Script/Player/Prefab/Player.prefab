@@ -337,42 +337,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7514310717901786137}
     m_Modifications:
-    - target: {fileID: 1363856602023988338, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.315
-      objectReference: {fileID: 0}
-    - target: {fileID: 3561568884889516394, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_Radius
-      value: 0.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 4723959641389489759, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5765365408917066582, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_Constraints
-      value: 72
-      objectReference: {fileID: 0}
-    - target: {fileID: 6198672241733934860, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: distance
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: stairLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7850559960545904555, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -416,6 +380,42 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1363856602023988338, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.315
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561568884889516394, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_Radius
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 4723959641389489759, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5765365408917066582, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_Constraints
+      value: 72
+      objectReference: {fileID: 0}
+    - target: {fileID: 6198672241733934860, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: distance
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: stairLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 7388900211730783802, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7850559960545904555, guid: cc155852b7c95dd4395cc70b3a81587c, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2983501847934323087, guid: 63a22269208d5bc409f8654adb3de4fa, type: 3}
       propertyPath: m_Avatar
@@ -598,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+  canHeal: 1
 --- !u!114 &2253534548589777784
 MonoBehaviour:
   m_ObjectHideFlags: 0

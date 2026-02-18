@@ -87,7 +87,7 @@ public class Inputs : MonoBehaviour
         if (value.isPressed && playerHealth.currentHealth < 100)
         {
             playerHealth.Heal(50);
-            //Debug.Log("Heal");
+            playerHealth.canHeal = false;
         }
     }
 }
