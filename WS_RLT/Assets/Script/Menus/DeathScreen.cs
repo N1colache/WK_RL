@@ -9,7 +9,6 @@ public class DeathScreen : MonoBehaviour
 
 
 
-
     public void Restart()
     {
         Debug.Log("Restart");
