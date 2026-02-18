@@ -7,8 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: eyescanner_arm
+    second: {fileID: 2100000, guid: e0c19a56db69a6f4d98e3d63cb053131, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyescanner_body
+    second: {fileID: 2100000, guid: 9ae4841cdb3126e439ecf8e99e1dacb6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyescanner_glass
+    second: {fileID: 2100000, guid: 3927ec1a360e9d046b12c922e18d3448, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: 560f641ef72df2a4b98aba2b96163865, type: 2}
+    second: {fileID: 2100000, guid: 9ae4841cdb3126e439ecf8e99e1dacb6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
