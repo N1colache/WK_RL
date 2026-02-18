@@ -470,6 +470,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9048693215277061878}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5927879560241375100}
   m_SourcePrefab: {fileID: 100100000, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
 --- !u!4 &2591733666028250463 stripped
 Transform:
@@ -493,7 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aefe4f481733684695b955357afef3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
+  moveSpeed: 8
   jumpHeight: 2
   gravity: -9.81
   jumpTime: 0.2
@@ -672,6 +675,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 1
   m_WriteDefaultValuesOnDisable: 1
+--- !u!114 &5927879560241375100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2935327319976886245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8352afcf6c8fd45872ff5099f0c1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadePrefab: {fileID: 2463807381698931583, guid: 455ad1ccb3c1e0148a11e3e828dbf57f, type: 3}
+  firePoint: {fileID: 2624539194166408956}
+  throwForce: 5
+  cooldown: 1.5
 --- !u!4 &4451990469598936444 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 3d0f3573289d2bf4a8c3e4cebb446257, type: 3}
