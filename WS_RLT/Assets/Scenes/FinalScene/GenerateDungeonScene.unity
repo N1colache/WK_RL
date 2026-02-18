@@ -289,7 +289,7 @@ MonoBehaviour:
   surface: {fileID: 0}
   width: 5
   height: 5
-  tileSize: 115
+  tileSize: 130
   startRoomPrefab: {fileID: 5702423172695193927, guid: 8dc4159bc6cd2dc4aab1f27b6d8f548d, type: 3}
   bossRoomPrefab: {fileID: 6807191345636954780, guid: d85de42a13fc5c242b399c2c33371489, type: 3}
   middleRoomPrefabs:
@@ -760,6 +760,18 @@ PrefabInstance:
     - target: {fileID: 951518259189332891, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 5289549588648015041, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5289549588648015041, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5289549588648015041, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6484270326951143622, guid: 86bc42b7e1e253848a855833f8c0c532, type: 3}
       propertyPath: m_Pivot.x
