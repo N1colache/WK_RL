@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1508747182701249282
+--- !u!114 &-7009495412899890810
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Wayn_Body
-  m_Shader: {fileID: -6465566751694194690, guid: 27119841cdc34f3418b68592d043f993, type: 3}
+  m_Name: MM_CharaGear
+  m_Shader: {fileID: -6465566751694194690, guid: 6675971a2965602478e08f8e0e4fa6e8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -37,8 +37,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 2800000, guid: 7158f634953646141970ef435bf1d490, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseColor:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 8228d1dbc27bbc84e8586af3aab0cce1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -70,7 +74,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metallic:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f797a26fb2b1a27428331833135ee760, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -78,7 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3fa49dd7463050940b4fa0fba1b3d2ff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -89,28 +93,8 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Rooughness:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_3f06aff6c1d34258a28ab8cbfc8da6ae_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 1bb9ba0088518c948b785445aa11a520, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_58c63701e5644752b497573747292032_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: c842b8d7080249e46924fbe4f62082ec, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_658ef07df3754a37909df9120ea6ca91_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 150094b2a21148b438a1ef248b73081c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_9f8178c5e5d643ad92b720acede8b3b3_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 54d2eebba03a85c46a50722de352d399, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_a94d1ad617fe4ebd9c80edd15ebc659e_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: a758806fa0af3bf4a9d96db941194ec1, type: 3}
+    - _Roughness:
+        m_Texture: {fileID: 2800000, guid: fdab2745ab11cb346bf6c887795c47a0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
