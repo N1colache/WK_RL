@@ -16,6 +16,8 @@ public class Grenade : MonoBehaviour
     public GameObject vfx;
     private VisualEffect explosion_VFX;
     
+    public AudioSource audioExplode;
+    
     void Start()
     {
         Invoke("VFXExplosion", 1.1f);
@@ -31,6 +33,8 @@ public class Grenade : MonoBehaviour
     
     void Explode()
     {
+        audioExplode.Play();
+        
         hasExploded = true;
         Rigidbody2D rb = GetComponentInChildren<Rigidbody2D>();
         
