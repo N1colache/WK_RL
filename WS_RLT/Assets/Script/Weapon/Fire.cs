@@ -34,6 +34,8 @@ public class Fire : MonoBehaviour
     
     public GameObject vfx;
     private VisualEffect muzzleFlashVFX;
+    
+    public AudioSource audioFire;
 
     void Start()
     {
@@ -121,6 +123,8 @@ public class Fire : MonoBehaviour
     {
         vfx.SetActive(true);
         
+        audioFire.Play();
+        
         if (direction == Vector3.zero) direction = Vector3.forward;
         
         Quaternion rotation = Quaternion.LookRotation(direction);
@@ -144,6 +148,8 @@ public class Fire : MonoBehaviour
     {
         vfx.SetActive(false);
     }
+
+    
 
     public void StartReload()
     {

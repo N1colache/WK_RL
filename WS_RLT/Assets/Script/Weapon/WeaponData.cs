@@ -7,7 +7,7 @@ public class WeaponData : MonoBehaviour
     [SerializeField] private GameObject shotgunPrefab;
 
     private GameObject pistol;
-    private GameObject burst;
+   
     private GameObject shotgun;
 
     private GameObject currentWeapon;
@@ -19,11 +19,11 @@ public class WeaponData : MonoBehaviour
     void Start()
     {
         pistol = Instantiate(pistolPrefab, firePoint);
-        burst = Instantiate(burstPrefab, firePoint);
+       
         shotgun = Instantiate(shotgunPrefab, firePoint);
 
         SetupWeapon(pistol);
-        SetupWeapon(burst);
+       
         SetupWeapon(shotgun);
 
         EquipWeapon(pistol);
@@ -42,7 +42,7 @@ public class WeaponData : MonoBehaviour
         {
             if (burstUnlocked)
             {
-                EquipWeapon(burst);
+                EquipWeapon(shotgun);
             }
             else
             {
@@ -63,7 +63,7 @@ public class WeaponData : MonoBehaviour
     void EquipWeapon(GameObject weaponToEquip)
     {
         pistol.SetActive(false);
-        burst.SetActive(false);
+      
         shotgun.SetActive(false);
 
         weaponToEquip.SetActive(true);

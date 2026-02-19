@@ -273,7 +273,7 @@ public class GridDungeon : MonoBehaviour
 
         // Récupérer CharacterController et Camera dans l'enfant
         CharacterController controller = currentPlayer.GetComponentInChildren<CharacterController>();
-        Camera cam = currentPlayer.GetComponentInChildren<Camera>();
+        Camera cam = Camera.main;
 
         if (controller == null)
         {
@@ -281,15 +281,7 @@ public class GridDungeon : MonoBehaviour
             yield break;
         }
 
-        if (cam == null)
-        {
-            Debug.LogError("Camera introuvable dans l'enfant du joueur !");
-        }
-        else
-        {
-            cam.gameObject.SetActive(true);
-            playerCamera = cam.gameObject;
-        }
+        
 
         // Désactiver le controller avant de bouger le joueur
         controller.enabled = false;
