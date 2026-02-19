@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 8541108133074328265}
   - component: {fileID: 1033261223059588007}
   m_Layer: 0
-  m_Name: Pistol
+  m_Name: PistolPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inputs: {fileID: 0}
-  bulletPrefab: {fileID: 5364271010790380958, guid: c7ea71a01cc8c6243a9c565a3914df7b, type: 3}
+  bulletPrefab: {fileID: 5364271010790380958, guid: a4a402c05fd94b342b454f009a9256b4, type: 3}
   barrel: {fileID: 8947149888308669380}
   currentWeapon: Pistol
   bulletSpeed: 30
