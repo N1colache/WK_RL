@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Health : MonoBehaviour
 {
@@ -9,10 +10,15 @@ public class Health : MonoBehaviour
 
     public System.Action<int, int> OnHealthChanged;
 
+    public GameObject blood;
+    private ParticleSystem bloodEffect;
+
     void Start()
     {
         currentHealth = maxHealth;
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        
+        bloodEffect = blood.GetComponent<ParticleSystem>();
     }
 
     void Update()
@@ -22,6 +28,15 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        if (bloodEffect != null)
+        {
+            bloodEffect.Play();
+        }
+        else
+        {
+            Debug.Log("No vfx");
+        }
+        
         currentHealth -= amount;
 
         if (currentHealth < 0)
