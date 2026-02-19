@@ -22,7 +22,8 @@ public class PocheDeSang : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _healthScript.Heal(-healAmmount);
+            _healthScript.canHeal = true;
+            //_healthScript.Heal(-healAmmount);
         }
     }
 }

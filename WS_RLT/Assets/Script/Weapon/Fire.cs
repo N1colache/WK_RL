@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Fire : MonoBehaviour
 {
@@ -30,12 +31,16 @@ public class Fire : MonoBehaviour
     private bool isReloading = false;
 
     private float waitForAnnim;
+    
+    public GameObject vfx;
+    private VisualEffect muzzleFlashVFX;
 
     void Start()
     {
         _inputs = GetComponentInParent<Inputs>();
         currentAmmo = magazineSize;
         
+        vfx.SetActive(false);
     }
 
     void Update()
@@ -80,6 +85,8 @@ public class Fire : MonoBehaviour
 
     void StartBurst()
     {
+        
+        
         isBursting = true;
         burstRemaining = burstCount;
         burstTimer = 0f; // tir immédiat
@@ -112,6 +119,8 @@ public class Fire : MonoBehaviour
 
     void FireSingleBullet(Vector3 direction)
     {
+        vfx.SetActive(true);
+        
         if (direction == Vector3.zero) direction = Vector3.forward;
         
         Quaternion rotation = Quaternion.LookRotation(direction);
@@ -127,6 +136,13 @@ public class Fire : MonoBehaviour
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
             rb.AddForce(direction * bulletSpeed, ForceMode.Impulse);
+
+        Invoke("HandleVFXOff", 0.5f);
+    }
+
+    void HandleVFXOff()
+    {
+        vfx.SetActive(false);
     }
 
     public void StartReload()

@@ -21,7 +21,7 @@ public class Controller : MonoBehaviour
 
     private bool isDashing = false;
     private float dashTimer;
-    private float cooldownTimer;
+    public float cooldownTimer;
     private Vector3 dashDirection;
 
     private Vector3 velocity;
