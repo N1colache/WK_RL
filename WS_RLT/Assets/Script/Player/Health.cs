@@ -11,6 +11,7 @@ public class Health : MonoBehaviour
     public System.Action<int, int> OnHealthChanged;
 
     public GameObject blood;
+    private GameObject deathScreen;
     private ParticleSystem bloodEffect;
 
     void Start()
@@ -19,6 +20,7 @@ public class Health : MonoBehaviour
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
         
         bloodEffect = blood.GetComponent<ParticleSystem>();
+        deathScreen = GameObject.FindGameObjectWithTag("Death");
     }
 
     void Update()
@@ -60,6 +62,10 @@ public class Health : MonoBehaviour
         if (currentHealth == 0)
         {
             Destroy(this.gameObject);
+            if (gameObject.tag == "Player")
+            {
+               deathScreen.SetActive(true);
+            }
         }
     }
 }
