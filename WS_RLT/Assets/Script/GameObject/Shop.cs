@@ -12,6 +12,7 @@ public class Shop : MonoBehaviour
     private PlayerCurrency playerCurrency;
     private Transform playerTransform;
     private WeaponData weaponPlayer;
+    private Health playerHealth;
     
     void Awake()
     {
@@ -21,6 +22,8 @@ public class Shop : MonoBehaviour
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         weaponPlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<WeaponData>();
+        
+        playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
         
     }
 
@@ -67,7 +70,8 @@ public class Shop : MonoBehaviour
         if (playerCurrency.currency >= 10)
         {
             playerCurrency.currency -= 10;
-            Instantiate(blood, playerTransform.position, Quaternion.identity);
+            playerHealth.canHeal = true;
+            //Instantiate(blood, playerTransform.position, Quaternion.identity);
         }
     }
 
