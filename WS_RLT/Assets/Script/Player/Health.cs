@@ -13,6 +13,8 @@ public class Health : MonoBehaviour
     public GameObject blood;
     private GameObject deathScreen;
     private ParticleSystem bloodEffect;
+    
+    public AudioSource audioVoice;
 
     void Start()
     {
@@ -30,6 +32,8 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        audioVoice.Play();
+        
         if (bloodEffect != null)
         {
             bloodEffect.Play();
