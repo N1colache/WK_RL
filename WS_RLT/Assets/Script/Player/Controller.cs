@@ -36,6 +36,8 @@ public class Controller : MonoBehaviour
     private GameObject currentStairObject;
     private GameObject currentStairUpObject;
     private GameObject OldStairObject;
+    private Collider OldstairCollider;
+    private StairCollider CurrentStairCollider;
     private GameObject OldStairUpObject;
     [SerializeField] private Collider stair;
     public bool disableStair;
@@ -92,27 +94,37 @@ public class Controller : MonoBehaviour
             jumpTimer -= Time.deltaTime;
         }
 
-        if (_groundDetector.stairTouched)
+        if (_groundDetector.stairTouched && currentStairObject == null)
         {
-                currentStairObject = _groundDetector._collider;
-            
-        }
-        else
-        {
-            currentStairObject = null;
+            currentStairObject = _groundDetector._collider;
         }
 
         //Debug.Log(_inputs.crounch);
         //Debug.Log(currentStairObject);
         
+        
+        Debug.Log("STAIR: " + currentStairObject);
+        Debug.Log("CROUCH: " + _inputs.crounch);
+
         if (currentStairObject != null && _inputs.crounch)
         {
-            Debug.Log("Escalier désactivé");
-            currentStairObject.GetComponent<Collider>();
-            OldStairObject = currentStairObject;
-            DisableStairCollision();
-            
-            
+
+            StairCollider tempColliderStair = currentStairObject.GetComponent<StairCollider>();
+            CurrentStairCollider = tempColliderStair;
+            tempColliderStair.DisableCollider();
+            Debug.Log("DISABLED STAIRS HAHAHAHAH");
+            StartCoroutine(ReenableStairUpAfterDelay(1f));
+
+            /*
+              Debug.Log("Escalier désactivé");
+              Collider tempstairs = currentStairObject.GetComponent<Collider>();
+              OldstairCollider = tempstairs;
+              tempstairs.enabled = false;
+              OldStairObject = currentStairObject;
+              StartCoroutine(ReenableStairAfterDelay(1f));
+
+              */
+
         }
         if (_groundDetectorUp.stairUpTouched)
         {
@@ -151,11 +163,7 @@ public class Controller : MonoBehaviour
               {
                   transform.rotation = Quaternion.LookRotation(move);
               }
-                         
-
-        
-      
-
+              
        
         
         // Jump
@@ -197,6 +205,8 @@ public class Controller : MonoBehaviour
             
                
         }
+        Debug.Log(OldstairCollider);
+        
         
     }
 
@@ -218,14 +228,15 @@ public class Controller : MonoBehaviour
 
     private void DisableStairCollision()
     {
+        
         if (currentStairObject != null && !disableStair)
         {
-             
-             disableStair = true;
-             OldStairObject = currentStairObject;
-             currentStairObject.SetActive(false); 
-             
-             StartCoroutine(ReenableStairAfterDelay(1f));
+            disableStair = true;
+            OldStairObject = currentStairObject;
+            Collider temp = currentStairObject.GetComponent<Collider>();
+            Debug.Log("DisabledStairCollision");
+            Physics.IgnoreCollision(controller,currentStairObject.GetComponent<Collider>(),true);
+            StartCoroutine(ReenableStairAfterDelay(1f));
         }
        
         
@@ -236,7 +247,19 @@ public class Controller : MonoBehaviour
 
         if (OldStairObject != null)
         {
-            OldStairObject.SetActive(true);
+            
+            CurrentStairCollider.EnableCollider();
+            Debug.Log("ReenableStairAfterDelay");
+            
+            
+            /*
+            Collider tempOld = OldstairCollider.GetComponent<Collider>();
+            OldstairCollider.enabled = true;
+            OldstairCollider.GetComponent<Collider>().enabled = true;
+
+            Physics.IgnoreCollision(controller,OldstairCollider.GetComponent<Collider>(),false);
+            
+            */
         }
 
         disableStair = false;
@@ -287,4 +310,6 @@ public class Controller : MonoBehaviour
         Gizmos.DrawLine(playerPos, worldPos);
         Gizmos.DrawCube(worldPos, Vector3.one * 0.2f);
     }
+    
+    
 }

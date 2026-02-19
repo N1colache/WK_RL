@@ -28,39 +28,21 @@ public class GroundDetector : MonoBehaviour
 
     void Update()
     {
-        Vector3 start = transform.position;
-        Vector3 startUp = transform.position ;
+        Vector3 point = transform.position;
+        stairTouched = Physics.CheckSphere(point,radius,stairLayer,QueryTriggerInteraction.Ignore);
 
-        if (Physics.SphereCast(
-                start,
-                radius,
-                Vector3.down,
-                out RaycastHit hit,
-                distance,
-                stairLayer,
-                QueryTriggerInteraction.Ignore))
+        if (stairTouched)
         {
-            stairTouched = true;
-            _collider = hit.collider.gameObject;
-            stairTimer = stairBufferTime;
+            Collider col = Physics.OverlapSphere(point,radius,stairLayer)[0];_collider = col.gameObject;
         }
         else
         {
-            stairTimer -= Time.deltaTime;
-
-            if (stairTimer <= 0f)
-            {
-                stairTouched = false;
-                _collider = null;
-                ControllerRef.disableStair = true;
-                
-            }
+            _collider = null;
         }
-       
+
         touched = controller.isGrounded;
-       
-        
     }
+
 
     
 
