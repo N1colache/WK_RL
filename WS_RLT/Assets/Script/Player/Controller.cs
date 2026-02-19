@@ -47,6 +47,10 @@ public class Controller : MonoBehaviour
     public bool walk;
     public bool run;
     public bool attack;
+    
+    [Header("Sound")]
+    public AudioSource audioWalk;
+    bool playSound = false;
 
     void Start()
     {
@@ -146,6 +150,19 @@ public class Controller : MonoBehaviour
              controller.Move(move * moveSpeed * Time.deltaTime) ;
              
              
+             if (input.x != 0 && playSound == false) 
+             {
+                 audioWalk.PlayOneShot(audioWalk.clip);
+                 playSound = true;
+                 Invoke("SFX",1.901f);
+             }
+             // else
+             // {
+             //     audioWalk.Stop();
+             //     playSound = false;
+             // }
+             
+             
               // Rotation vers la direction du mouvement
               if (move.sqrMagnitude > 0.01f)
               {
@@ -200,6 +217,13 @@ public class Controller : MonoBehaviour
         
     }
 
+    private void SFX()
+    {
+        playSound = false;
+    }
+    
+    
+    
     void StartDash()
     {
         isDashing = true;
