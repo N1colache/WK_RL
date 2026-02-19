@@ -273,7 +273,7 @@ public class GridDungeon : MonoBehaviour
 
         // Récupérer CharacterController et Camera dans l'enfant
         CharacterController controller = currentPlayer.GetComponentInChildren<CharacterController>();
-        Camera cam = currentPlayer.GetComponentInChildren<Camera>();
+        Camera cam = Camera.main;
 
         if (controller == null)
         {
